@@ -11,20 +11,28 @@ struct TabbarView: View {
         case movies
         case discover
         case settings
+        
+        func name() -> String {
+            
+        }
     }
     
-    func tabbarItem(text: String, imageName: String) -> some View {
+    func tabbarItem(tab: Tab, imageName: String) -> some View {
         VStack {
+            if selectedTab == tab {
+                imageName = imageName + ".fill"
+            }
+            
             Image(imageName)
                 .imageScale(.large)
-            Text(text)
+            Text(tab.name())
         }
     }
     
     var body: some View {
         TabView(selection: $selectedTab) {
             MovieHomeView().tabItem{
-                self.tabbarItem(text: "Movies", imageName: "home-logo")
+                self.tabbarItem(text: "Movies", imageName: "")
             }.tag(Tab.movies)
             MovieHomeView().tabItem{
                 self.tabbarItem(text: "Discover", imageName: "film-reel")
