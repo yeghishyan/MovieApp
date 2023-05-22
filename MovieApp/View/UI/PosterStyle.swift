@@ -35,7 +35,7 @@ struct PosterStyle: ViewModifier {
 }
 
 extension View {
-    func posterStyle(size: PosterStyle.Size) -> some View {
+    func fixedFrame(size: PosterStyle.Size) -> some View {
         return ModifiedContent(content: self, modifier: PosterStyle(size: size))
     }
 }

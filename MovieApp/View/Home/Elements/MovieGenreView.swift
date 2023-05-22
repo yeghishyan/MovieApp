@@ -32,7 +32,7 @@ struct MovieGenreView: View {
 #if DEBUG
 struct MovieGenreView_Previews: PreviewProvider {
     static var previews: some View {
-        MovieGenreView(movie: Movie.stubbedMovie)
+        MovieGenreView(movie: Movie.stubbedMovies[0])
     }
 }
 #endif

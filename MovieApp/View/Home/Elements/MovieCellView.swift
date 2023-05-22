@@ -11,21 +11,24 @@ fileprivate let formatter: DateFormatter = {
 }()
 
 struct MovieCellView: View {
+    @ObservedObject var imageLoader: ImageLoader
     let movie: Movie
-    @StateObject var imageLoader = ImageLoader()
+    
+    init(movie: Movie) {
+        self.movie = movie
+        imageLoader = ImageLoader(imagePath: movie.backdrop_path)
+    }
     
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
-            image()
-                .resizable()
-                .posterStyle(size: .medium)
+            image
                 .shadow(radius: 5)
                 .cornerRadius(9)
             VStack(alignment: .leading, spacing: 20) {
                 ZStack {
                     Text(movie.title)
                         .overlay(alignment: .leading) {
-                            image().blur(radius: 10)
+                            image.blur(radius: 10)
                         }
                         .mask(Text(movie.title))
                         .overlay {
@@ -55,15 +58,20 @@ struct MovieCellView: View {
                 }
             }
         }
-        .onAppear { imageLoader.loadImage(with: movie.poster_path) }
         //.contextMenu{MovieContextMenu(movieId: self.movieId) }
     }
     
-    private func image() -> Image {
-        if let image = imageLoader.image {
-            return Image(uiImage: image)
+    private var image: some View {
+        ZStack {
+            if let image = imageLoader.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } else {
+                Rectangle()
+                    .foregroundColor(.gray)
+            }
         }
-        return Image(uiImage: UIImage())
     }
 }
 
@@ -72,8 +80,6 @@ struct MovieCell_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             MovieCellView(movie: Movie.stubbedMovies[15])
-                .aspectRatio(9/16, contentMode: .fit)
-                .frame(width: 360)
         }
     }
 }

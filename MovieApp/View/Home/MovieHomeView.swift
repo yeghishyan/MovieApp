@@ -15,10 +15,10 @@ struct MovieHomeView: View {
                     Text(section.title)
                         .font(.oswald(style: .largeTitle, weight: .medium))
                     if case .nowPlaying = section.endpoint {
-                        MovieRowView(title: section.title, movies: section.movies, alignment: .horizontal)
+                        MovieListView(title: section.title, movies: section.movies, alignment: .horizontal)
                     }
                     else {
-                        MovieRowView(title: section.title, movies: section.movies)
+                        MovieListView(title: section.title, movies: section.movies)
                     }
                 }
             }

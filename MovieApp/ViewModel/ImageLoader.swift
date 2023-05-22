@@ -9,19 +9,25 @@ private let _imageCache = NSCache<AnyObject, AnyObject>()
 
 class ImageLoader: ObservableObject {
     enum Size: String {
-        case small = "https://image.tmdb.org/t/p/w154/"
-        case medium = "https://image.tmdb.org/t/p/w500/"
-        case cast = "https://image.tmdb.org/t/p/w185/"
-        case original = "https://image.tmdb.org/t/p/original/"
+        case ld = "https://image.tmdb.org/t/p/w300"
+        case sd = "https://image.tmdb.org/t/p/w500"
+        case hd = "https://image.tmdb.org/t/p/w780/"
+        case fullHd = "https://image.tmdb.org/t/p/w1080"
+        case original = "https://image.tmdb.org/t/p/original"
     }
     
     @Published var image: UIImage?
-    @Published var isLoading = false
+    @Published var imagePath: String
+    
+    init(imagePath: String, size: Size = Size.sd) {
+        self.imagePath = imagePath
+        loadImage(size: size)
+    }
     
     var imageCache = _imageCache
 
-    func loadImage(with path: String, size: Size = Size.medium) {
-        let url = URL(string: size.rawValue)!.appendingPathComponent(path)
+    func loadImage(size: Size) {
+        let url = URL(string: size.rawValue)!.appendingPathComponent(imagePath)
         let urlString = url.absoluteString
         
         if let imageFromCache = imageCache.object(forKey: urlString as AnyObject) as? UIImage {

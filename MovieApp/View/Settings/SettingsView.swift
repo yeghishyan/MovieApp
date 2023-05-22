@@ -17,39 +17,36 @@ struct SettingsView : View {
     }
     
     var body: some View {
-        NavigationView {
-            Form {
-                Section(header: Text("Main"), content: {
+        NavigationSplitView(
+            sidebar:{
+                Form {
+                    Section(header: Text("Main"), content: {
                         Toggle(isOn: $alwaysOriginalTitle) {
                             Text("Always show original title")
                         }
                     }
-                )
-                Section(header: Text("App data"), content: {
-                    Text("Export my data")
-                    Text("Backup to iCloud")
-                    Text("Restore from iCloud")
-                    Text("Reset application data").foregroundColor(.red)
-                })
-                Section(header: Text("Debug info")) {
-                    debugInfoView(title: "Movies in state", info: "movies count")
-                    debugInfoView(title: "Archived state size", info: "chace size")
+                    )
+                    Section(header: Text("App data"), content: {
+                        Text("Export my data")
+                        Text("Backup to iCloud")
+                        Text("Restore from iCloud")
+                        Text("Reset application data").foregroundColor(.red)
+                    })
+                    Section(header: Text("Debug info")) {
+                        debugInfoView(title: "Movies in state", info: "movies count")
+                        debugInfoView(title: "Archived state size", info: "chace size")
+                    }
                 }
-            }
-            .onAppear{
-                self.alwaysOriginalTitle = AppConfig.alwaysOriginalTitle
-            }
-            .padding(.top, 20)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Text("Settings")
-                        .font(.largeTitle.bold())
-                        .foregroundColor(.steam_foreground)
-                        .padding([.leading, .top], 20)
+                .onAppear{
+                    self.alwaysOriginalTitle = AppConfig.alwaysOriginalTitle
                 }
-            }
-        }
+                .padding(.top, 20)
+                .navigationBarTitleDisplayMode(.large)
+                .navigationTitle("Settings")
+            },
+            detail: {
+                
+            })
     }
 }
 

@@ -14,14 +14,12 @@ struct MovieDetailListView: View {
             movieRatingSection
             movieDescriptionSection.listRowSeparator(.visible)
             movieCastSection.listRowSeparator(.hidden)
-            movieTrailerSection
         }
     }
     
     private var movieDescriptionSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(movie.overview)
-            
         }
         .padding(.vertical)
     }
@@ -66,32 +64,13 @@ struct MovieDetailListView: View {
         }
         .padding(.vertical)
     }
-    
-    @ViewBuilder
-    private var movieTrailerSection: some View {
-        if let trailers = movie.youtubeTrailers, !trailers.isEmpty {
-            Text("Trailers").font(.headline)
-            ForEach(trailers) { trailer in
-                Button(action: {
-                    guard let url = trailer.youtubeURL else { return }
-                    //selectedTrailerURL = url
-                }) {
-                    HStack {
-                        Text(trailer.name)
-                        Spacer()
-                        Image(systemName: "play.circle.fill")
-                            .foregroundColor(Color(UIColor.systemBlue))
-                    }
-                }
-            }
-        }
-    }
+
 }
 
 #if DEBUG
 struct MovieDetailList_Preview: PreviewProvider {
     static var previews: some View {
-        MovieDetailListView(movie: Movie.stubbedMovie)
+        MovieDetailListView(movie: Movie.stubbedMovies[16])
     }
 }
 #endif

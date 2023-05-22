@@ -12,9 +12,15 @@ fileprivate let formatter: DateFormatter = {
 
 struct MoviePoster: View {
     let movie: Movie
-    @StateObject var imageLoader = ImageLoader()
+    @ObservedObject var imageLoader: ImageLoader
     @State var scale = 1.0
 
+    init(movie: Movie, scale: Double = 1.0) {
+        self.movie = movie
+        self.imageLoader = ImageLoader(imagePath: movie.poster_path)
+        self.scale = scale
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             image()
@@ -24,8 +30,6 @@ struct MoviePoster: View {
                     CircleRating(score: Int(movie.vote_average * 10), size: 30)
                         .padding([.trailing, .top], 10)
                 })
-                .onAppear { imageLoader.loadImage(with: movie.poster_path) }
-                .posterStyle(size: .medium)
                 .shadow(color: .black.opacity(0.5), radius: 8)
                 .cornerRadius(13)
             //maskedText(text: movie.title, image: image())
@@ -60,9 +64,7 @@ struct MoviePoster: View {
 struct MoviePosterCard_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MoviePoster(movie: Movie.stubbedMovie)
-                .aspectRatio(9/16, contentMode: .fit)
-                .frame(width: 360)
+            MoviePoster(movie: Movie.stubbedMovies[0])
         }
     }
 }

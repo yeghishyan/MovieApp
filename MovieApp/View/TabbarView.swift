@@ -13,18 +13,19 @@ struct TabbarView: View {
         case settings
         
         func name() -> String {
-            
+            switch self {
+            case .movies: return "Movies"
+            case .discover: return "Discover"
+            case .settings: return "Settings"
+            }
         }
     }
     
-    func tabbarItem(tab: Tab, imageName: String) -> some View {
+    func tabbarItem(_ tab: Tab, imageName: String) -> some View {
         VStack {
-            if selectedTab == tab {
-                imageName = imageName + ".fill"
-            }
-            
-            Image(imageName)
+            Image(systemName: selectedTab == tab ? imageName + ".fill" : imageName)
                 .imageScale(.large)
+                .foregroundColor(selectedTab == tab ? .red : .steam_foreground)
             Text(tab.name())
         }
     }
@@ -32,13 +33,13 @@ struct TabbarView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             MovieHomeView().tabItem{
-                self.tabbarItem(text: "Movies", imageName: "")
+                self.tabbarItem(.movies, imageName: "film.circle")
             }.tag(Tab.movies)
             MovieHomeView().tabItem{
-                self.tabbarItem(text: "Discover", imageName: "film-reel")
+                self.tabbarItem(.discover, imageName: "popcorn.circle")
             }.tag(Tab.discover)
             SettingsView().tabItem{
-                self.tabbarItem(text: "Settings", imageName: "settings-button")
+                self.tabbarItem(.settings, imageName: "gearshape.circle")
             }.tag(Tab.settings)
         }
     }

@@ -4,7 +4,7 @@
 
 import SwiftUI
 
-struct MovieRowView: View {
+struct MovieListView: View {
     let title: String
     let movies: [Movie]
     let alignment: Axis.Set
@@ -16,26 +16,22 @@ struct MovieRowView: View {
     }
     
     var body: some View {
-        VStack {
-            if alignment == .vertical {
-                ScrollView(.vertical, showsIndicators: false) {
+        NavigationStack {
+            ScrollView(.horizontal, showsIndicators: false) {
+                if alignment == .vertical {
                     LazyVStack(alignment: .leading, spacing: 10) {
                         ForEach(self.movies) { movie in
-                            NavigationLink(
-                                destination: MovieDetailView(movieId: movie.id, movieTitle: movie.title)) {
-                                    MovieCellView(movie: movie)
-                                }
+                            NavigationLink(destination: MovieDetailView(movie: movie)) {
+                                MovieCellView(movie: movie)
+                            }
                         }
                     }
-                }
-            } else {
-                ScrollView(.horizontal, showsIndicators: false) {
+                } else {
                     LazyHStack(alignment: .top, spacing: 10) {
                         ForEach(self.movies) { movie in
-                            NavigationLink(
-                                destination: MovieDetailView(movieId: movie.id, movieTitle: movie.title)) {
-                                    MoviePoster(movie: movie)
-                                }
+                            NavigationLink(destination: MovieDetailView(movie: movie)) {
+                                MoviePoster(movie: movie)
+                            }
                         }
                     }
                 }
@@ -47,7 +43,7 @@ struct MovieRowView: View {
 #if DEBUG
 struct MovieRow_Previews: PreviewProvider {
     static var previews: some View {
-        MovieRowView(title: "Test", movies: Movie.stubbedMovies)
+        MovieListView(title: "Test", movies: Movie.stubbedMovies)
             .frame(width: UIScreen.main.bounds.width)
             .frame(height: UIScreen.main.bounds.height - 100)
     }

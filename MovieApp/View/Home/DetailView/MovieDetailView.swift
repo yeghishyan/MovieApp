@@ -5,57 +5,37 @@
 import SwiftUI
 
 struct MovieDetailView: View {
-    let movieId: Int
-    let movieTitle: String
     @StateObject private var movieDetailState = MovieDetailViewModel()
-    @State private var selectedTrailerURL: URL?
+    
+    let movie: Movie
     
     var body: some View {
-        List {
+        ZStack {
             if let movie = movieDetailState.movie {
-                MovieDetailImage(imagePath: movie.backdrop_path)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                    .listRowSeparator(.hidden)
-                MovieDetailListView(movie: movie) //, selectedTrailerURL: $selectedTrailerURL)
+                MovieDetailImage(imagePath: movie.poster_path)
+                MovieDetailInfo(movie: movie)
             }
         }
-        .listStyle(.plain)
         .task { loadMovie() }
         .overlay(DataLoadingView(
             phase: movieDetailState.phase,
             retryAction: loadMovie)
         )
-//        .sheet(item: $selectedTrailerURL) { SafariView(url: $0).edgesIgnoringSafeArea(.bottom)}
-        .navigationTitle(movieTitle)
+        .navigationTitle(movie.userTitle)
     }
     
-    //@Sendable
     private func loadMovie() {
-        Task { await movieDetailState.loadMovie(id: self.movieId) }
+        Task {
+            await movieDetailState.loadMovie(id: self.movie.id)
+        }
     }
 }
 
-struct MovieDetailImage: View {
-    @StateObject private var imageLoader = ImageLoader()
-    let imagePath: String
-    
-    var body: some View {
-        ZStack {
-            //Color.gray.opacity(0.3)
-            if let image = imageLoader.image {
-                Image(uiImage: image)
-                    .resizable()
-            }
-        }
-        .aspectRatio(16/9, contentMode: .fit)
-        .onAppear { imageLoader.loadImage(with: imagePath) }
-    }
-}
 
 #if DEBUG
 struct MovieDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MovieDetailView(movieId: Movie.stubbedMovie.id, movieTitle: Movie.stubbedMovie.title)
+        MovieDetailView(movie: Movie.stubbedMovies[0])
     }
 }
 #endif

@@ -13,10 +13,6 @@ extension Movie {
         //debugPrint(response?.results.first)
         return response!.results
     }
-    
-    static var stubbedMovie: Movie {
-        stubbedMovies[4]
-    }
 }
 
 extension Bundle {
