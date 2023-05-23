@@ -7,6 +7,9 @@ import SwiftUI
 struct MovieDetailImage: View {
     @ObservedObject private var imageLoader: ImageLoader
     
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    var isPortrait: Bool { verticalSizeClass == .regular }
+    
     init(imagePath: String?) {
         self.imageLoader = ImageLoader(imagePath: imagePath, size: .hd)
     }
@@ -14,15 +17,30 @@ struct MovieDetailImage: View {
     private var image: some View {
         ZStack {
             if let image = imageLoader.image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                if isPortrait {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .edgesIgnoringSafeArea(.all)
+                } else {
+                    GeometryReader { geometry in
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .edgesIgnoringSafeArea(.all)
+                            .frame(maxWidth: geometry.size.width,
+                                   maxHeight: geometry.size.height,
+                                   alignment: .top)
+                    }
+                }
             } else {
                 Rectangle()
                     .foregroundColor(.gray)
             }
         }
     }
+
+
     
     private var gradient: some View {
         LinearGradient(
@@ -39,8 +57,8 @@ struct MovieDetailImage: View {
                     gradient
                     gradient.offset(y: 120)
                 }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        //.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .edgesIgnoringSafeArea(.all)
     }
 }
@@ -48,7 +66,12 @@ struct MovieDetailImage: View {
 #if DEBUG
 struct MovieDetailImage_Preview: PreviewProvider {
     static var previews: some View {
-        MovieDetailImage(imagePath: Movie.stubbedMovies[2].poster_path)
+        @Environment(\.verticalSizeClass) var verticalSizeClass
+        var isPortrait: Bool { verticalSizeClass == .regular }
+        let id = 16
+        
+        MovieDetailImage(
+            imagePath: (!isPortrait ? Movie.stubbedMovies[id].poster_path : Movie.stubbedMovies[id].backdrop_path))
     }
 }
 #endif

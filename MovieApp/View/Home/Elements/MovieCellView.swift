@@ -45,7 +45,7 @@ struct MovieCellView: View {
             Text(movie.overview)
                 .truncationMode(.tail)
                 .multilineTextAlignment(.leading)
-                .lineLimit(3)
+                .lineLimit(2)
                 .foregroundColor(.secondary)
                 .font(.oswald(size: 15))
         }

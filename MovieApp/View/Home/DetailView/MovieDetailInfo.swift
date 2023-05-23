@@ -50,39 +50,39 @@ struct MovieDetailInfo: View {
     private var ratingSection: some View {
         HStack(alignment: .center, spacing: 5) {
             //RoundedBadge(text: "IMDB 7.0", color: .yellow)
-            Button("IMDB", action: {})
-                .buttonStyle(GradientButtonStyle())
-            
-            Image(systemName: "star.fill")
-                .imageScale(.small)
-            
-            Text("\(movie.vote_average)".prefix(3))
-                .font(.oswald(size: 14, weight: .medium))
-                .kerning(-0.9)
-            
-            Text("(\(movie.vote_count/1000)k votes)")
-                .font(.custom("SF Compact", size: 14))
-                .foregroundColor(.black.lighter())
-                .kerning(-0.9)
+            Button(action: {}, label: {
+                HStack {
+                    Image(systemName: "star.fill")
+                        .imageScale(.small)
+                    
+                    Text("\(movie.vote_average)".prefix(3))
+                        .font(.oswald(size: 14, weight: .medium))
+                        .kerning(-0.9)
+                    
+                    Text("(\(movie.vote_count) votes)")
+                        .font(.custom("SF Compact", size: 14))
+                        .kerning(-0.9)
+                }
+            })
+            .buttonStyle(GradientButtonStyle())
         }
     }
     
     private var titleSection: some View {
-        HStack {
+        VStack {
             Text(movie.title)
                 .font(.oswald(style: .largeTitle, weight: .bold))
+                .multilineTextAlignment(.leading)
                 .foregroundColor(.white)
+                .lineSpacing(0)
         }
     }
     
     private func genreSection(genres: [MovieGenre]) -> some View {
         HStack {
-            ForEach(genres) { genre in
+            ForEach(genres.prefix(3)) { genre in
                 NavigationLink(destination: MovieGenreListView(genre: genre)) {
-                    Button(genre.name, action: {})
-                        .buttonStyle(GradientButtonStyle(
-                            gradient: Gradient(colors: [.gray, .gray.opacity(0.5)]))
-                        )
+                    RoundedBadge(text: genre.name)
                 }
             }
         }
@@ -123,7 +123,7 @@ struct MovieDetailInfo: View {
 struct MovieDetailInfo_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
-            MovieDetailInfo(movie: Movie.stubbedMovies[0])
+            MovieDetailInfo(movie: Movie.stubbedMovies[16])
         }
     }
 }

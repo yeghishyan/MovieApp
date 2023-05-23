@@ -12,7 +12,7 @@ class ImageLoader: ObservableObject {
         case ld = "https://image.tmdb.org/t/p/w300"
         case sd = "https://image.tmdb.org/t/p/w500"
         case hd = "https://image.tmdb.org/t/p/w780/"
-        case fullHd = "https://image.tmdb.org/t/p/w1080"
+        case fullHd = "https://image.tmdb.org/t/p/w1280"
         case original = "https://image.tmdb.org/t/p/original"
     }
     

@@ -6,6 +6,8 @@ import SwiftUI
 
 struct MovieGenreListView: View {
     @StateObject private var movieGenreModel = MovieGenreViewModel()
+    @Environment(\.dismiss) private var dismiss
+    
     private let genre: MovieGenre
     
     init(genre: MovieGenre) {
@@ -26,6 +28,12 @@ struct MovieGenreListView: View {
         .listStyle(.plain)
         .task { loadGenres() }
         .navigationTitle(genre.name)
+        .navigationBarBackButtonHidden(true)
+        .toolbar{
+            ToolbarItem(placement: .navigationBarLeading) {
+                NavigationBackButton(dismiss: dismiss)
+            }
+        }
     }
     
     private func loadGenres() {

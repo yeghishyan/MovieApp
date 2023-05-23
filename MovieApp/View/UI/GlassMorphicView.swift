@@ -10,6 +10,8 @@ struct GlassMorphicView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> UIVisualEffectView {
         let view = UIVisualEffectView(effect: UIBlurEffect(style: effect))
+        view.gaussianBlurValue = 4
+        view.saturationAmount = 8
         return view
     }
     

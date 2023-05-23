@@ -58,7 +58,6 @@ struct SearchableView: View {
         }
     }
     
-    
     private func loadMovies(invalidateCache: Bool) {
         Task { await movieHomeModel.loadMoviesFromAllEndpoints(invalidateCache: invalidateCache) }
     }

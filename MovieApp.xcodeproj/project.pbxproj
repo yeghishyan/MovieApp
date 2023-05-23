@@ -26,6 +26,7 @@
 		0E5D4EAD2A10F1D9000EB92F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D4EAC2A10F1D9000EB92F /* Assets.xcassets */; };
 		0E5D4EB02A10F1D9000EB92F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D4EAF2A10F1D9000EB92F /* Preview Assets.xcassets */; };
 		0E6E6F112A14A1CA00A62FF2 /* RoundedBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6E6F102A14A1CA00A62FF2 /* RoundedBadge.swift */; };
+		0E9E473B2A1CF28300666731 /* NavigationButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E473A2A1CF28300666731 /* NavigationButtons.swift */; };
 		0EB654902A1CE16C00EFC625 /* GradientButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB6548F2A1CE16C00EFC625 /* GradientButtonStyle.swift */; };
 		0ED0059A2A15611D00FF287A /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED005992A15611D00FF287A /* View.swift */; };
 		0ED0059C2A156F8900FF287A /* Oswald-Heavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0ED0059B2A156F8900FF287A /* Oswald-Heavy.ttf */; };
@@ -82,6 +83,7 @@
 		0E5D4EAC2A10F1D9000EB92F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0E5D4EAF2A10F1D9000EB92F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0E6E6F102A14A1CA00A62FF2 /* RoundedBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedBadge.swift; sourceTree = "<group>"; };
+		0E9E473A2A1CF28300666731 /* NavigationButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtons.swift; sourceTree = "<group>"; };
 		0EB6548F2A1CE16C00EFC625 /* GradientButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButtonStyle.swift; sourceTree = "<group>"; };
 		0ED005992A15611D00FF287A /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		0ED0059B2A156F8900FF287A /* Oswald-Heavy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Heavy.ttf"; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				0EE6C0052A123C1C00C7D697 /* DataLoadingView.swift */,
 				0ED3C18A2A1BC89600DD45AC /* GlassMorphicView.swift */,
 				0EB6548F2A1CE16C00EFC625 /* GradientButtonStyle.swift */,
+				0E9E473A2A1CF28300666731 /* NavigationButtons.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				0EF8D6AD2A10FCC60052471C /* SettingsView.swift in Sources */,
 				0EE6C0122A125ABD00C7D697 /* MovieDetailViewModel.swift in Sources */,
 				0E11C59F2A139C52003A8DD2 /* DataFetchPhase.swift in Sources */,
+				0E9E473B2A1CF28300666731 /* NavigationButtons.swift in Sources */,
 				0EF8D6A82A10F94D0052471C /* MovieHomeView.swift in Sources */,
 				0EB654902A1CE16C00EFC625 /* GradientButtonStyle.swift in Sources */,
 				0EF8D6BC2A11729D0052471C /* MovieAPI.swift in Sources */,
