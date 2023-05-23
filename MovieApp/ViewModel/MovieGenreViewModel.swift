@@ -6,24 +6,22 @@ import SwiftUI
 
 @MainActor
 class MovieGenreViewModel: ObservableObject {
-    @Published private(set) var phase: DataFetchPhase<[MovieGenre]?> = .empty
-    
+    @Published private(set) var phase: DataFetchPhase<[Movie]?> = .empty
     private let movieService: MovieService
-    var genres: [MovieGenre]? { phase.value ?? nil }
     
+    var movies: [Movie]? { phase.value ?? nil }
+        
     init(movieService: MovieService = MovieService.shared) {
         self.movieService = movieService
     }
     
-    func name(id: Int) -> String { return genres?.first(where: { $0.id == id })?.name ?? "n/a" }
-    
-    func loadGenres() async {
+    func loadGenres(genre: MovieGenre) async {
         if Task.isCancelled { return }
         phase = .empty
      
         do {
-            let genres = try await self.movieService.fetchGenres()
-            phase = .success(genres)
+            let movie = try await self.movieService.fetchGenres(genre: genre)
+            phase = .success(movie)
         } catch {
             phase = .failure(error)
         }

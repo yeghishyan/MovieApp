@@ -15,16 +15,12 @@ class MovieDetailViewModel: ObservableObject {
         self.movieService = movieService
     }
     
-    func loadMovie(id: Int, invalidateCache: Bool = false) async {
+    func loadMovieDetails(id: Int, invalidateCache: Bool = false) async {
         if case .success = phase, !invalidateCache { return }
         phase = .empty
         
         do {
-            let 
-            guard let movie = movie else {
-                movie = try await self.movieService.fetchMovie(movieId: id)
-            }
-            
+            var movie = try await self.movieService.fetchMovie(movieId: id)
             movie.videos = try await self.movieService.fetchVideo(movieId: id)
             movie.credits = try await self.movieService.fetchCredit(movieId: id)
             

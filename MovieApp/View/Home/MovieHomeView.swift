@@ -6,7 +6,7 @@ import SwiftUI
 import Combine
 
 struct MovieHomeView: View {
-    @StateObject private var searchModel = MovieSearchModel()
+    @StateObject private var searchModel = MovieSearchViewModel()
     @Environment(\.isSearching) private var isSearching
     
     var body: some View {
@@ -29,7 +29,7 @@ struct MovieHomeView: View {
 }
 
 struct SearchableView: View {
-    @EnvironmentObject private var searchModel: MovieSearchModel
+    @EnvironmentObject private var searchModel: MovieSearchViewModel
     @Environment(\.isSearching) var isSearching
     
     @StateObject private var movieHomeModel = MovieHomeViewModel()

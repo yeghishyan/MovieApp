@@ -5,7 +5,7 @@
 import SwiftUI
 
 @MainActor
-class MovieSearchModel: ObservableObject {
+class MovieSearchViewModel: ObservableObject {
     @Published private(set) var phase: DataFetchPhase<[Movie]> = .empty
     @Published var searchText: String
 

@@ -9,7 +9,7 @@ enum MovieAPIError: Error, CustomNSError {
     case noResponseData
     case invalidEndpoint
     case invalidResponse
-    case serializationError
+    case serializationError(Error)
     
     var localizedDescription: String {
         switch self {
@@ -17,7 +17,7 @@ enum MovieAPIError: Error, CustomNSError {
         case .noResponseData: return "No response data"
         case .invalidEndpoint: return "Invalid endpoint"
         case .invalidResponse: return "Invalid response"
-        case .serializationError: return "Failed to decode data"
+        case .serializationError(let error): return "Failed to decode data.\n \(error.localizedDescription)"
         }
     }
     
@@ -59,7 +59,14 @@ struct MovieAPI {
             throw MovieAPIError.invalidResponse
         }
         
-        return try self.decoder.decode(T.self, from: data);
+        //debugPrint(finalURL)
+        
+        do {
+            let data = try self.decoder.decode(T.self, from: data);
+            return data
+        } catch {
+            throw MovieAPIError.serializationError(error)
+        }
     }
 }
 

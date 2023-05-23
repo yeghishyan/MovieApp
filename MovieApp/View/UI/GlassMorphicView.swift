@@ -37,7 +37,7 @@ extension UIVisualEffectView {
         backDrop?.perform(Selector(("applyRequestedFilterEffects")))
     }
 
-    var gaussianBlurValue: CGFloat {
+    public var gaussianBlurValue: CGFloat {
         get {
             return gaussianBlur?.values?["inputRadiug"] as? CGFloat ?? 0
         }
@@ -47,7 +47,7 @@ extension UIVisualEffectView {
         }
     }
     
-    var saturationAmount: CGFloat {
+    public var saturationAmount: CGFloat {
         get {
             return saturation?.values?["inputRadiug"] as? CGFloat ?? 0
         }

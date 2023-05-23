@@ -10,7 +10,7 @@ struct MovieDetailListView: View {
     
     var body: some View {
         List {
-            MovieGenreView(movie: movie)
+            //MovieGenreView(movie: movie)
             movieRatingSection
             movieDescriptionSection.listRowSeparator(.visible)
             movieCastSection.listRowSeparator(.hidden)
