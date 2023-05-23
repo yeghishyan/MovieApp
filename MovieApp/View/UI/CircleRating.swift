@@ -11,7 +11,7 @@ struct CircleRating : View {
     
     @State private var isDisplayed = false
     
-    public init(score: Int = 0, textColor: Color = .primary, size: CGFloat = 40) {
+    public init(score: Int = 0, textColor: Color = .primary, size: CGFloat = 35) {
         self.score = score
         self.textColor = textColor
         self.sideSize = size
@@ -34,7 +34,7 @@ struct CircleRating : View {
         ZStack {
             Circle()
                 .trim(from: 0, to: isDisplayed ? CGFloat(score) / 100 : 0)
-                .stroke(style: StrokeStyle(lineWidth: 4, dash: [60/sideSize]))
+                .stroke(style: StrokeStyle(lineWidth: 5, dash: [30/sideSize]))
                 .foregroundColor(scoreColor.opacity(1))
                 .animation(Animation.interpolatingSpring(stiffness: 60, damping: 10).delay(0.19), value: score)
         }
@@ -45,7 +45,7 @@ struct CircleRating : View {
     var body: some View {
         ZStack {
             Text("\(score)%")
-                .font(Font.system(size: sideSize/30 + 7))
+                .font(Font.system(size: sideSize/20 + 8))
                 .fontWeight(.bold)
                 .foregroundColor(scoreColor)
             Circle()

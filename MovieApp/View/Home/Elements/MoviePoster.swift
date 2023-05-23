@@ -21,42 +21,28 @@ struct MoviePoster: View {
         self.scale = scale
     }
     
+    private var image: some View {
+        ZStack {
+            if let image = imageLoader.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } else {
+                Rectangle()
+                    .foregroundColor(.gray)
+            }
+        }.fixedSize(size: .small)
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            image()
-                .resizable()
-                .scaledToFit()
+            image
                 .overlay(alignment: .topTrailing, content: {
                     CircleRating(score: Int(movie.vote_average * 10), size: 30)
                         .padding([.trailing, .top], 10)
                 })
-                .shadow(color: .black.opacity(0.5), radius: 8)
-                .cornerRadius(13)
-            //maskedText(text: movie.title, image: image())
         }
         //.contextMenu{MovieContextMenu(movieId: self.movieId) }
-    }
-    
-    private func maskedText(text: String, image: Image) -> some View {
-        image
-            .resizable()
-            .frame(height: 16)
-            .blur(radius: 10)
-            .mask(Text(text))
-            .overlay(content: {
-                Text(movie.title).opacity(0.3)
-            })
-            .font(.oswald(size: 16, weight: .heavy))
-            .padding(.top, -5)
-            .lineLimit(1)
-            .frame(width: PosterStyle.Size.medium.width())
-    }
-    
-    private func image() -> Image {
-        if let image = imageLoader.image {
-            return Image(uiImage: image)
-        }
-        return Image(uiImage: UIImage())
     }
 }
 

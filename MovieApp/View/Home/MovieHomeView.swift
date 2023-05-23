@@ -6,37 +6,63 @@ import SwiftUI
 import Combine
 
 struct MovieHomeView: View {
-    @StateObject private var movieHomeState = MovieHomeViewModel()
+    @StateObject private var searchModel = MovieSearchModel()
+    @Environment(\.isSearching) private var isSearching
     
     var body: some View {
-        ScrollView {
-            ForEach(movieHomeState.sections, id: \.self) { section in
-                VStack(alignment: .leading, spacing: 5) {
-                    Text(section.title)
-                        .font(.oswald(style: .largeTitle, weight: .medium))
-                    if case .nowPlaying = section.endpoint {
-                        MovieListView(title: section.title, movies: section.movies, alignment: .horizontal)
-                    }
-                    else {
-                        MovieListView(title: section.title, movies: section.movies)
-                    }
-                }
+        NavigationStack {
+            SearchableView()
+                .environmentObject(searchModel)
+        }
+        .searchable(text: $searchModel.searchText)
+        .onReceive(searchModel.$searchText.debounce(for: 0.3, scheduler: RunLoop.main)) { _ in
+            print(searchModel.searchText)
+            if !searchModel.searchText.isEmpty {
+                searchMovies()
             }
         }
-        .padding(.horizontal)
-        .task { loadMovies(invalidateCache: false) }
-        .refreshable { loadMovies(invalidateCache: true) }
-        .overlay(DataLoadingView(
-            phase: movieHomeState.phase,
-            retryAction: { loadMovies(invalidateCache: true) })
-        )
-        .navigationTitle("XCA Movies")
     }
     
-    //@Sendable
-    private func loadMovies(invalidateCache: Bool) {
-        Task { await movieHomeState.loadMoviesFromAllEndpoints(invalidateCache: invalidateCache) }
+    private func searchMovies() {
+        Task { await searchModel.loadSearchResult() }
     }
+}
+
+struct SearchableView: View {
+    @EnvironmentObject private var searchModel: MovieSearchModel
+    @Environment(\.isSearching) var isSearching
+    
+    @StateObject private var movieHomeModel = MovieHomeViewModel()
+    @State private var selectedSection: Int = 0
+    
+    var body: some View {
+        if isSearching {
+            MovieListView(movies: searchModel.movies)
+        }
+        else {
+            ZStack {
+                ForEach(movieHomeModel.sections.prefix(1).indices, id: \.self) { id in
+                    MovieListView(movies: movieHomeModel.sections[id].movies, alignment: .vertical)
+                        .tag(id)
+                    .navigationTitle(movieHomeModel.sections[id].title)
+                }
+            }
+            .task { loadMovies(invalidateCache: false) }
+            //.refreshable { loadMovies(invalidateCache: true) }
+            .overlay(DataLoadingView(
+                phase: movieHomeModel.phase,
+                retryAction: { loadMovies(invalidateCache: true) })
+            )
+            .tabViewStyle(.page)
+            .padding(.horizontal, 10)
+        }
+    }
+    
+    
+    private func loadMovies(invalidateCache: Bool) {
+        Task { await movieHomeModel.loadMoviesFromAllEndpoints(invalidateCache: invalidateCache) }
+    }
+    
 }
 
 #if DEBUG

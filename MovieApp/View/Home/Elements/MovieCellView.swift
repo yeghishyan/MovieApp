@@ -16,7 +16,39 @@ struct MovieCellView: View {
     
     init(movie: Movie) {
         self.movie = movie
-        imageLoader = ImageLoader(imagePath: movie.backdrop_path)
+        imageLoader = ImageLoader(imagePath: movie.poster_path)
+    }
+    
+    private var titleSection: some View {
+        ZStack {
+            Text(movie.title)
+        }
+        .lineLimit(2)
+        .multilineTextAlignment(.leading)
+        .font(.oswald(size: 23, weight: .heavy))
+    }
+    
+    private var ratingSection: some View {
+        HStack(alignment: .center, spacing: 15) {
+            CircleRating(score: Int(movie.vote_average * 10))
+            //Text(formatter.string(from: movie.releaseDate ?? Date()))
+            Text(movie.releaseDate, format: Date.FormatStyle().day().month(.defaultDigits).year())
+                .lineLimit(1)
+                .font(.oswald(size: 15, weight: .bold))
+        }
+        .foregroundColor(.steam_gold)
+        .padding(.leading, 5)
+    }
+    
+    private var overviewSection: some View {
+        VStack(alignment: .leading) {
+            Text(movie.overview)
+                .truncationMode(.tail)
+                .multilineTextAlignment(.leading)
+                .lineLimit(3)
+                .foregroundColor(.secondary)
+                .font(.oswald(size: 15))
+        }
     }
     
     var body: some View {
@@ -24,40 +56,14 @@ struct MovieCellView: View {
             image
                 .shadow(radius: 5)
                 .cornerRadius(9)
-            VStack(alignment: .leading, spacing: 20) {
-                ZStack {
-                    Text(movie.title)
-                        .overlay(alignment: .leading) {
-                            image.blur(radius: 10)
-                        }
-                        .mask(Text(movie.title))
-                        .overlay {
-                            Text(movie.title)
-                                .tint(.steam_foreground)
-                        }
-                }
-                .lineLimit(2)
-                .multilineTextAlignment(.leading)
-                .font(.oswald(size: 23, weight: .heavy))
-                
-                HStack(spacing: 15) {
-                    CircleRating(score: Int(movie.vote_average * 10))
-                    Text(formatter.string(from: movie.releaseDate ?? Date()))
-                        .font(.subheadline)
-                        .foregroundColor(.steam_gold)
-                        .lineLimit(1)
-                }.padding(.leading, 5)
-
-                VStack(alignment: .leading) {
-                    Text(movie.overview)
-                        .truncationMode(.tail)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(4)
-                        .foregroundColor(.secondary)
-                        .font(.system(size: 15))
-                }
+            VStack(alignment: .leading) {
+                titleSection
+                ratingSection
+                overviewSection
             }
         }
+        .foregroundColor(.primary)
+        .padding(.horizontal, 5)
         //.contextMenu{MovieContextMenu(movieId: self.movieId) }
     }
     
@@ -71,7 +77,7 @@ struct MovieCellView: View {
                 Rectangle()
                     .foregroundColor(.gray)
             }
-        }
+        }.fixedSize(size: .small)
     }
 }
 

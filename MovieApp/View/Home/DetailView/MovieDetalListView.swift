@@ -66,11 +66,11 @@ struct MovieDetailListView: View {
     }
 
 }
-
-#if DEBUG
-struct MovieDetailList_Preview: PreviewProvider {
-    static var previews: some View {
-        MovieDetailListView(movie: Movie.stubbedMovies[16])
-    }
-}
-#endif
+//
+//#if DEBUG
+//struct MovieDetailList_Preview: PreviewProvider {
+//    static var previews: some View {
+//        MovieDetailListView(movie: Movie.stubbedMovies[16])
+//    }
+//}
+//#endif

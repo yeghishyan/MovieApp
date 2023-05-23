@@ -7,7 +7,7 @@ import SwiftUI
 struct MovieDetailImage: View {
     @ObservedObject private var imageLoader: ImageLoader
     
-    init(imagePath: String) {
+    init(imagePath: String?) {
         self.imageLoader = ImageLoader(imagePath: imagePath, size: .hd)
     }
     
@@ -16,7 +16,7 @@ struct MovieDetailImage: View {
             if let image = imageLoader.image {
                 Image(uiImage: image)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .aspectRatio(contentMode: .fit)
             } else {
                 Rectangle()
                     .foregroundColor(.gray)
@@ -26,9 +26,10 @@ struct MovieDetailImage: View {
     
     private var gradient: some View {
         LinearGradient(
-            stops: [.init(color: .steam_theme, location: 0),
-                    .init(color: .clear, location: 1)],
-            startPoint: .top, endPoint: .bottom)
+            stops: [.init(color: .clear, location: 0),
+                    .init(color: .steam_theme, location: 1)],
+            startPoint: .center,
+            endPoint: .bottom)
     }
     
     var body: some View {
@@ -39,13 +40,15 @@ struct MovieDetailImage: View {
                     gradient.offset(y: 120)
                 }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
 #if DEBUG
 struct MovieDetailImage_Preview: PreviewProvider {
     static var previews: some View {
-        MovieDetailImage(imagePath: Movie.stubbedMovies[0].poster_path)
+        MovieDetailImage(imagePath: Movie.stubbedMovies[2].poster_path)
     }
 }
 #endif

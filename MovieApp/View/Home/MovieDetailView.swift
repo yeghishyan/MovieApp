@@ -6,7 +6,6 @@ import SwiftUI
 
 struct MovieDetailView: View {
     @StateObject private var movieDetailState = MovieDetailViewModel()
-    
     let movie: Movie
     
     var body: some View {

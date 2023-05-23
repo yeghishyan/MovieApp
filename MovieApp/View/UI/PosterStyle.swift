@@ -10,16 +10,9 @@ struct PosterStyle: ViewModifier {
         
         func width() -> CGFloat {
             switch self {
-            case .small: return 100
-            case .medium: return 153
-            case .big: return 250
-            }
-        }
-        func height() -> CGFloat {
-            switch self {
-            case .small: return 150
-            case .medium: return 230
-            case .big: return 375
+            case .small: return 130
+            case .medium: return 240
+            case .big: return 370
             }
         }
     }
@@ -28,14 +21,15 @@ struct PosterStyle: ViewModifier {
     
     func body(content: Content) -> some View {
         return content
-            .frame(width: size.width(), height: size.height())
-            .cornerRadius(5)
-            .shadow(radius: 8)
+            .cornerRadius(13)
+            .shadow(color: .black.opacity(0.5), radius: 8)
+            .frame(maxWidth: size.width(), maxHeight: size.width() * 6/4)
+            .scaledToFit()
     }
 }
 
 extension View {
-    func fixedFrame(size: PosterStyle.Size) -> some View {
+    func fixedSize(size: PosterStyle.Size) -> some View {
         return ModifiedContent(content: self, modifier: PosterStyle(size: size))
     }
 }

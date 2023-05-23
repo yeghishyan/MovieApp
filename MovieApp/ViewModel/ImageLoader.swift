@@ -17,9 +17,9 @@ class ImageLoader: ObservableObject {
     }
     
     @Published var image: UIImage?
-    @Published var imagePath: String
+    @Published var imagePath: String?
     
-    init(imagePath: String, size: Size = Size.sd) {
+    init(imagePath: String?, size: Size = Size.sd) {
         self.imagePath = imagePath
         loadImage(size: size)
     }
@@ -27,7 +27,8 @@ class ImageLoader: ObservableObject {
     var imageCache = _imageCache
 
     func loadImage(size: Size) {
-        let url = URL(string: size.rawValue)!.appendingPathComponent(imagePath)
+        guard let path = imagePath else { return }
+        let url = URL(string: size.rawValue)!.appendingPathComponent(path)
         let urlString = url.absoluteString
         
         if let imageFromCache = imageCache.object(forKey: urlString as AnyObject) as? UIImage {

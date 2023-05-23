@@ -11,6 +11,7 @@ struct Response<T: Codable>: Codable {
     let results: [T]
 }
 
+
 struct Movie: Codable, Identifiable {
     let id: Int
     
@@ -18,8 +19,8 @@ struct Movie: Codable, Identifiable {
     let title: String
     
     let overview: String
-    let poster_path: String
-    let backdrop_path: String
+    let poster_path: String?
+    let backdrop_path: String?
     let popularity: Float
     let vote_average: Float
     let vote_count: Int
@@ -52,14 +53,14 @@ struct Movie: Codable, Identifiable {
         return formatter.string(from: TimeInterval(runtime)*60) ?? "n/a"
     }
     
-    var releaseDate: Date? {
+    var releaseDate: Date {
         guard let date = release_date else { return Date() }
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-mm-dd"
-        return formatter.date(from: date)
+        return formatter.date(from: date) ?? Date()
     }
 
-    var releaseYear: String { releaseDate?.get(.year).description ?? "n/a" }
+    var releaseYear: String { releaseDate.get(.year).description } // ?? "n/a" }
     
     var directors: [MovieCrew]? { credits?.crew.filter { $0.job.lowercased() == "director" } }
     var producers: [MovieCrew]? { credits?.crew.filter { $0.job.lowercased() == "producer" } }

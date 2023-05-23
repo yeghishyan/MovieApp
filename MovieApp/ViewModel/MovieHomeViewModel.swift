@@ -6,7 +6,6 @@ import Foundation
 
 @MainActor
 class MovieHomeViewModel: ObservableObject {
-    
     @Published private(set) var phase: DataFetchPhase<[MovieSection]> = .empty
     private let movieService: MovieService = MovieService.shared
     
