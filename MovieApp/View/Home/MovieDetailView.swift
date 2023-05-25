@@ -5,10 +5,11 @@
 import SwiftUI
 
 struct MovieDetailView: View {
-    @StateObject private var movieDetailState = MovieDetailViewModel()
+    @StateObject private var movieDetailModel = MovieDetailViewModel()
     @Environment(\.dismiss) private var dismiss
     
     @Environment(\.verticalSizeClass) var verticalSizeClass
+    var isPortrait: Bool { verticalSizeClass == .regular }
 
     let movie: Movie
     
@@ -17,27 +18,21 @@ struct MovieDetailView: View {
     
     var body: some View {
         ZStack {
-            MovieDetailImage(imagePath: (verticalSizeClass == .regular ? movie.poster_path : movie.backdrop_path))
+            MovieDetailImage(imagePath: (isPortrait ? movie.poster_path : movie.backdrop_path))
             
-            if let movie = movieDetailState.movie {
-                ScrollView {
+            if let movie = movieDetailModel.movie {
+                ScrollView(showsIndicators: false) {
                     Spacer()
-                        .frame(minHeight: 200)
+                        .frame(minHeight: isPortrait ? 300 : 200)
                     MovieDetailInfo(movie: movie)
                 }
             }
-            
         }
         .task { loadMovieDetails() }
         .overlay(DataLoadingView(
-            phase: movieDetailState.phase,
+            phase: movieDetailModel.phase,
             retryAction: loadMovieDetails)
         )
-        .navigationTitle("")
-        .navigationBarBackButtonHidden(true)
-        .toolbar{ToolbarItem(placement: .navigationBarLeading) {
-            NavigationBackButton(dismiss: dismiss)
-        }}
         .toolbar{ ToolbarItem(placement: .navigationBarTrailing) {
             NavigationFavoriteButton(isFavorite: $isFavorite)
         }}
@@ -47,7 +42,7 @@ struct MovieDetailView: View {
     
     private func loadMovieDetails() {
         Task {
-            await movieDetailState.loadMovieDetails(id: self.movie.id)
+            await movieDetailModel.loadMovieDetails(id: self.movie.id)
         }
     }
 }

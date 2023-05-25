@@ -11,7 +11,7 @@ struct MovieDetailImage: View {
     var isPortrait: Bool { verticalSizeClass == .regular }
     
     init(imagePath: String?) {
-        self.imageLoader = ImageLoader(imagePath: imagePath, size: .hd)
+        self.imageLoader = ImageLoader(path: imagePath, size: .hd)
     }
     
     private var image: some View {
@@ -39,8 +39,6 @@ struct MovieDetailImage: View {
             }
         }
     }
-
-
     
     private var gradient: some View {
         LinearGradient(

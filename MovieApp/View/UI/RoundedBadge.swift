@@ -5,11 +5,11 @@
 import SwiftUI
 
 public struct RoundedBadge : View {
-    let text: String
-    let color: Color
-    let image: Image?
-    let horizontalPadding: CGFloat
-    let verticalPadding: CGFloat
+    private let text: String
+    private let color: Color
+    private let image: Image?
+    private let horizontalPadding: CGFloat
+    private let verticalPadding: CGFloat
     
     init(text: String,
          color: Color = .steam_gold,
@@ -37,7 +37,7 @@ public struct RoundedBadge : View {
                 .foregroundColor(.steam_foreground.darker())
                 .padding(.horizontal, horizontalPadding)
                 .padding(.vertical, verticalPadding)
-                .kerning(-0.5)
+                //.kerning(-0.5)
                 .lineLimit(1)
         }
         .background(Rectangle()

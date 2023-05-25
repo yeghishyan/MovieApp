@@ -4,12 +4,6 @@
 
 import SwiftUI
 
-fileprivate let formatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .medium
-    return formatter
-}()
-
 struct MoviePoster: View {
     let movie: Movie
     @ObservedObject var imageLoader: ImageLoader
@@ -17,7 +11,7 @@ struct MoviePoster: View {
 
     init(movie: Movie, scale: Double = 1.0) {
         self.movie = movie
-        self.imageLoader = ImageLoader(imagePath: movie.poster_path)
+        self.imageLoader = ImageLoader(path: movie.poster_path, size: .sd)
         self.scale = scale
     }
     
@@ -26,7 +20,7 @@ struct MoviePoster: View {
             if let image = imageLoader.image {
                 Image(uiImage: image)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .aspectRatio(contentMode: .fit)
             } else {
                 Rectangle()
                     .foregroundColor(.gray)

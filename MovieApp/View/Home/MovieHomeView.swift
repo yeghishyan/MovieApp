@@ -7,20 +7,37 @@ import Combine
 
 struct MovieHomeView: View {
     @StateObject private var searchModel = MovieSearchViewModel()
-    @Environment(\.isSearching) private var isSearching
+    @StateObject private var movieHomeModel = MovieHomeViewModel()
+    @State private var selectedSection: Int = 0
     
     var body: some View {
-        NavigationStack {
-            SearchableView()
-                .environmentObject(searchModel)
-        }
-        .searchable(text: $searchModel.searchText)
-        .onReceive(searchModel.$searchText.debounce(for: 0.3, scheduler: RunLoop.main)) { _ in
-            print(searchModel.searchText)
-            if !searchModel.searchText.isEmpty {
-                searchMovies()
+        //TabView(selection: $selectedSection) {
+        VStack {
+            NavigationStack {
+                if !movieHomeModel.sections.isEmpty {
+                    SearchableView(selected: $selectedSection)
+                        .environmentObject(searchModel)
+                        .environmentObject(movieHomeModel)
+                }
+            }
+            .searchable(text: $searchModel.searchText)
+            .onReceive(searchModel.$searchText.debounce(for: 0.4, scheduler: RunLoop.main)) { _ in
+                print(searchModel.searchText)
+                if !searchModel.searchText.isEmpty {
+                    searchMovies()
+                }
             }
         }
+        .task { loadMovies(invalidateCache: false) }
+        .refreshable { loadMovies(invalidateCache: true) }
+        .overlay(DataLoadingView(
+            phase: movieHomeModel.phase,
+            retryAction: { loadMovies(invalidateCache: true) })
+        )
+    }
+    
+    private func loadMovies(invalidateCache: Bool) {
+        Task { await movieHomeModel.loadMoviesFromAllEndpoints(invalidateCache: invalidateCache) }
     }
     
     private func searchMovies() {
@@ -30,44 +47,94 @@ struct MovieHomeView: View {
 
 struct SearchableView: View {
     @EnvironmentObject private var searchModel: MovieSearchViewModel
-    @Environment(\.isSearching) var isSearching
+    @EnvironmentObject private var movieHomeModel: MovieHomeViewModel
+    @State private var listViewMode: Bool = true
+
+    @Environment(\.isSearching) private var isSearching
+    @Binding private var selectedSection: Int
     
-    @StateObject private var movieHomeModel = MovieHomeViewModel()
-    @State private var selectedSection: Int = 0
+    init(selected: Binding<Int>) {
+        self._selectedSection = selected
+    }
     
-    var body: some View {
-        if isSearching {
-            MovieListView(movies: searchModel.movies)
+    private var viewModeButton: some View {
+        Button(action: {
+            self.listViewMode.toggle()
+        }) {
+            Image(systemName: listViewMode ? "circle.grid.3x3.circle": "line.3.horizontal.circle")
+                .resizable().imageScale(.large)
+                .frame(width: 25, height: 25, alignment: .center)
         }
-        else {
-            ZStack {
-                ForEach(movieHomeModel.sections.prefix(1).indices, id: \.self) { id in
-                    MovieListView(movies: movieHomeModel.sections[id].movies, alignment: .vertical)
-                        .tag(id)
-                    .navigationTitle(movieHomeModel.sections[id].title)
+        .frame(width: 44, height: 44, alignment: .center)
+        .tint(Color.steam_foreground)
+    }
+    
+    private func moviesRow(section: MovieSection) -> some View{
+        VStack(alignment: .leading) {
+            HStack(alignment: .center) {
+                Text(section.title)
+                    .font(.oswald(size: 23))
+                
+                NavigationLink(destination: MovieListView(movies: section.movies)
+                    .navigationBarTitle(section.title), label: {
+                        Spacer()
+                        Text("See all")
+                        Image(systemName: "chevron.right")
+                    })
+            }
+            .padding(.horizontal, 10)
+            .font(.oswald(size: 15))
+            .foregroundColor(.steam_foreground)
+            
+            Grid {
+                GridRow {
+                    MovieListView(movies: Array<Movie>(section.movies.prefix(5)), alignment: .horizontal)
+                        .padding(.top, -10)
+                        .padding(.bottom, 8)
+                }
+                
+                GridRow {
+                    MovieListView(movies: Array<Movie>(section.movies.suffix(5)), alignment: .horizontal)
+                        .padding(.top, -10)
+                        .padding(.bottom, 8)
                 }
             }
-            .task { loadMovies(invalidateCache: false) }
-            //.refreshable { loadMovies(invalidateCache: true) }
-            .overlay(DataLoadingView(
-                phase: movieHomeModel.phase,
-                retryAction: { loadMovies(invalidateCache: true) })
-            )
-            .tabViewStyle(.page)
-            .padding(.horizontal, 10)
         }
     }
     
-    private func loadMovies(invalidateCache: Bool) {
-        Task { await movieHomeModel.loadMoviesFromAllEndpoints(invalidateCache: invalidateCache) }
+    var body: some View {
+        ZStack {
+            if isSearching {
+                MovieListView(movies: searchModel.movies)
+            }
+            else if !movieHomeModel.sections.isEmpty {
+                if listViewMode {
+                    MovieListView(movies: movieHomeModel.sections[selectedSection].movies, alignment: .vertical)
+                        .navigationTitle(movieHomeModel.sections[selectedSection].title)
+                }
+                else {
+                    ScrollView(showsIndicators: false) {
+                        ForEach(movieHomeModel.sections, id: \.self) { section in
+                            moviesRow(section: section)
+                                .navigationTitle(movieHomeModel.sections[selectedSection].title)
+                        }
+                    }
+                }
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar{
+            ToolbarItem(placement: .navigationBarTrailing) { viewModeButton }
+        }
     }
-    
 }
 
 #if DEBUG
 struct HomeView_Previews : PreviewProvider {
     static var previews: some View {
+        //TabView {
         MovieHomeView()
+        //}
     }
 }
 #endif

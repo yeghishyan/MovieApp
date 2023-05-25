@@ -22,7 +22,7 @@ struct PosterStyle: ViewModifier {
     func body(content: Content) -> some View {
         return content
             .cornerRadius(13)
-            .shadow(color: .black.opacity(0.5), radius: 8)
+            //.shadow(color: .black.opacity(0.5), radius: 8)
             .frame(maxWidth: size.width(), maxHeight: size.width() * 6/4)
             .scaledToFit()
     }

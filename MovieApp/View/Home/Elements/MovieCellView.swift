@@ -6,7 +6,7 @@ import SwiftUI
 
 fileprivate let formatter: DateFormatter = {
     let formatter = DateFormatter()
-    formatter.dateStyle = .medium
+    formatter.dateFormat = "MMM dd, yyyy"
     return formatter
 }()
 
@@ -16,7 +16,7 @@ struct MovieCellView: View {
     
     init(movie: Movie) {
         self.movie = movie
-        imageLoader = ImageLoader(imagePath: movie.poster_path)
+        imageLoader = ImageLoader(path: movie.poster_path, size: .sd)
     }
     
     private var titleSection: some View {
@@ -32,7 +32,7 @@ struct MovieCellView: View {
         HStack(alignment: .center, spacing: 15) {
             CircleRating(score: Int(movie.vote_average * 10))
             //Text(formatter.string(from: movie.releaseDate ?? Date()))
-            Text(movie.releaseDate, format: Date.FormatStyle().day().month(.defaultDigits).year())
+            Text(movie.releaseDate, format: Date.FormatStyle().day().month().year())
                 .lineLimit(1)
                 .font(.oswald(size: 15, weight: .bold))
         }
@@ -51,6 +51,19 @@ struct MovieCellView: View {
         }
     }
     
+    private var image: some View {
+        ZStack {
+            if let image = imageLoader.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            } else {
+                Rectangle()
+                    .foregroundColor(.gray)
+            }
+        }.fixedSize(size: .small)
+    }
+    
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
             image
@@ -65,19 +78,6 @@ struct MovieCellView: View {
         .foregroundColor(.primary)
         .padding(.horizontal, 5)
         //.contextMenu{MovieContextMenu(movieId: self.movieId) }
-    }
-    
-    private var image: some View {
-        ZStack {
-            if let image = imageLoader.image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } else {
-                Rectangle()
-                    .foregroundColor(.gray)
-            }
-        }.fixedSize(size: .small)
     }
 }
 

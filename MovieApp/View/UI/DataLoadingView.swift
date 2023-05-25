@@ -15,7 +15,7 @@ struct DataLoadingView<T: EmptyData>: View {
     var body: some View {
         switch phase {
         case .empty:
-            ProgressView()
+            LoadingFiveLinesChronological()
         case .success(let value) where value.isEmpty:
             EmptyPlaceholderView(text: "No data", image: Image(systemName: "film"))
         case .failure(let error):

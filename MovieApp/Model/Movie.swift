@@ -11,7 +11,6 @@ struct Response<T: Codable>: Codable {
     let results: [T]
 }
 
-
 struct Movie: Codable, Identifiable {
     let id: Int
     
@@ -47,7 +46,7 @@ struct Movie: Codable, Identifiable {
     
     var durationText: String {
         let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .full
+        formatter.unitsStyle = .abbreviated
         formatter.allowedUnits = [.hour, .minute]
         guard let runtime = runtime else { return "n/a" }
         return formatter.string(from: TimeInterval(runtime)*60) ?? "n/a"
@@ -56,7 +55,7 @@ struct Movie: Codable, Identifiable {
     var releaseDate: Date {
         guard let date = release_date else { return Date() }
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-mm-dd"
+        formatter.dateFormat = "yyyy-MM-dd"
         return formatter.date(from: date) ?? Date()
     }
 

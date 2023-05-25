@@ -23,6 +23,8 @@ struct MainApplication: App {
             NSAttributedString.Key.font: UIFont(name: "Oswald-Medium", size: 40 )!,
             NSAttributedString.Key.foregroundColor: UIColor(named: "steam_foreground")!]
         
+        UIBarButtonItem.appearance().tintColor = UIColor(named: "steam_foreground")!
+        
         UINavigationBar.appearance().titleTextAttributes = [
             NSAttributedString.Key.font: UIFont(name: "Oswald-Regular", size: 18 )!,
             NSAttributedString.Key.foregroundColor: UIColor(named: "steam_foreground")!]

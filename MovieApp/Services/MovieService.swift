@@ -43,6 +43,7 @@ struct MovieService {
         let movieResponse: Response<MovieVideo> = try await api.GET(endpoint: endpoint, params: nil)
         return movieResponse.results
     }
+    
     func fetchCredit(movieId: Int) async throws -> MovieCredit {
         let endpoint = MovieEndpoint.credits(movie: movieId)
         
@@ -50,13 +51,12 @@ struct MovieService {
         return movieResponse
     }
     
-    func fetchGenres(genre: MovieGenre) async throws -> [Movie] {
+    func fetchDiscover(params: [String: String]) async throws -> [Movie] {
         let endpoint = MovieEndpoint.discover
-        let params = [
-            "with_genres": "\(genre.id)"
-        ]
+        var queryParams = params
+        queryParams["sort_by"] = "popularity.desc"
         
-        let movieResponse: Response<Movie> = try await api.GET(endpoint: endpoint, params: params)
+        let movieResponse: Response<Movie> = try await api.GET(endpoint: endpoint, params: queryParams)
         return movieResponse.results
     }
     

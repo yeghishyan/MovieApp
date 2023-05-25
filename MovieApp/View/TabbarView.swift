@@ -6,7 +6,8 @@ import SwiftUI
 
 struct TabbarView: View {
     @State var selectedTab = Tab.movies
-    
+    @State private var resetNavigationID = UUID()
+
     enum Tab: Int {
         case movies
         case discover
@@ -34,7 +35,7 @@ struct TabbarView: View {
         TabView(selection: $selectedTab) {
             MovieHomeView().tabItem{
                 self.tabbarItem(.movies, imageName: "film.circle")
-            }.tag(Tab.movies)
+            }.tag(resetNavigationID)
             MovieHomeView().tabItem{
                 self.tabbarItem(.discover, imageName: "popcorn.circle")
             }.tag(Tab.discover)

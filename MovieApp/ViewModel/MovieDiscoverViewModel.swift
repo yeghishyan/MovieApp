@@ -5,7 +5,15 @@
 import SwiftUI
 
 @MainActor
-class MovieGenreViewModel: ObservableObject {
+class MovieDiscoverViewModel: ObservableObject {
+    enum DiscoverParam: String {
+        case genre = "with_genres"
+        case cast = "with_cast"
+        case crew = "with_crew"
+        case people = "with_people"
+        case year = "year"
+    }
+    
     @Published private(set) var phase: DataFetchPhase<[Movie]?> = .empty
     private let movieService: MovieService
     
@@ -15,12 +23,12 @@ class MovieGenreViewModel: ObservableObject {
         self.movieService = movieService
     }
     
-    func loadGenres(genre: MovieGenre) async {
+    func loadMovies(param: DiscoverParam, value: String) async {
         if Task.isCancelled { return }
         phase = .empty
      
         do {
-            let movie = try await self.movieService.fetchGenres(genre: genre)
+            let movie = try await self.movieService.fetchDiscover(params: [param.rawValue: value])
             phase = .success(movie)
         } catch {
             phase = .failure(error)

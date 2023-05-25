@@ -42,6 +42,7 @@ struct NavigationFavoriteButton: View {
                 .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 
                 Image(systemName: "bookmark.circle")
+                    .imageScale(.large)
                     .foregroundColor(isFavorite ? .yellow : .black)
             }
         }
