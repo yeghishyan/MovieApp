@@ -5,14 +5,15 @@
 import SwiftUI
 
 struct MoviePoster: View {
-    let movie: Movie
     @ObservedObject var imageLoader: ImageLoader
-    @State var scale = 1.0
+    let size: PosterStyle.Size
+    let movie: Movie
 
-    init(movie: Movie, scale: Double = 1.0) {
+    init(movie: Movie, quality: ImageService.Quality = .sd, size: PosterStyle.Size = .medium) {
         self.movie = movie
-        self.imageLoader = ImageLoader(path: movie.poster_path, size: .sd)
-        self.scale = scale
+        self.size = size
+        self.imageLoader = ImageLoaderCache.shared.loaderFor(path: movie.poster_path, quality: quality)
+        //ImageLoader(path: movie.poster_path, quality: quality)
     }
     
     private var image: some View {
@@ -23,16 +24,17 @@ struct MoviePoster: View {
                     .aspectRatio(contentMode: .fit)
             } else {
                 Rectangle()
+                    .frame(width: size.width(), height: size.height())
                     .foregroundColor(.gray)
             }
-        }.fixedSize(size: .small)
+        }.fixedSize(size: size)
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             image
                 .overlay(alignment: .topTrailing, content: {
-                    CircleRating(score: Int(movie.vote_average * 10), size: 30)
+                    CircleRating(score: Int(movie.vote_average * 10), size: size.width()/4)
                         .padding([.trailing, .top], 10)
                 })
         }

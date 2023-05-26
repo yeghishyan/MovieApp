@@ -10,11 +10,11 @@ struct MovieService {
     private init() {}
     private let api = MovieAPI.shared
     
-    func fetchMovies(from list: MovieListEndpoint) async throws -> [Movie] {
+    func fetchMovies(from list: MovieSectionEndpoint) async throws -> [Movie] {
         let endpoint = list.endpoint()
         
-        let movieResponse: Response<Movie> = try await api.GET(endpoint: endpoint, params: nil)
-        return movieResponse.results
+        let responseData: Response<Movie> = try await api.GET(endpoint: endpoint, params: nil)
+        return responseData.results
     }
     
     func searchMovie(query: String) async throws -> [Movie] {
@@ -26,29 +26,29 @@ struct MovieService {
             "query": query
         ]
         
-        let movieResponse: Response<Movie> = try await api.GET(endpoint: endpoint, params: params)
-        return movieResponse.results
+        let responseData: Response<Movie> = try await api.GET(endpoint: endpoint, params: params)
+        return responseData.results
     }
     
     func fetchMovie(movieId: Int) async throws -> Movie {
         let endpoint = MovieEndpoint.movieDetail(movie: movieId)
         
-        let movieResponse: Movie = try await api.GET(endpoint: endpoint, params: nil)
-        return movieResponse
+        let responseData: Movie = try await api.GET(endpoint: endpoint, params: nil)
+        return responseData
     }
     
     func fetchVideo(movieId: Int) async throws -> [MovieVideo] {
         let endpoint = MovieEndpoint.videos(movie: movieId)
         
-        let movieResponse: Response<MovieVideo> = try await api.GET(endpoint: endpoint, params: nil)
-        return movieResponse.results
+        let responseData: Response<MovieVideo> = try await api.GET(endpoint: endpoint, params: nil)
+        return responseData.results
     }
     
     func fetchCredit(movieId: Int) async throws -> MovieCredit {
         let endpoint = MovieEndpoint.credits(movie: movieId)
         
-        let movieResponse: MovieCredit = try await api.GET(endpoint: endpoint, params: nil)
-        return movieResponse
+        let responseData: MovieCredit = try await api.GET(endpoint: endpoint, params: nil)
+        return responseData
     }
     
     func fetchDiscover(params: [String: String]) async throws -> [Movie] {
@@ -56,15 +56,29 @@ struct MovieService {
         var queryParams = params
         queryParams["sort_by"] = "popularity.desc"
         
-        let movieResponse: Response<Movie> = try await api.GET(endpoint: endpoint, params: queryParams)
-        return movieResponse.results
+        let responseData: Response<Movie> = try await api.GET(endpoint: endpoint, params: queryParams)
+        return responseData.results
+    }
+    
+    func fetchSimilar(movieId: Int) async throws -> [Movie] {
+        let endpoint = MovieEndpoint.similar(movie: movieId)
+        
+        let responseData: Response<Movie> = try await api.GET(endpoint: endpoint, params: nil)
+        return responseData.results
+    }
+    
+    func fetchMovieImages(movieId: Int) async throws -> MovieImages {
+        let endpoint = MovieEndpoint.images(movie: movieId)
+        
+        let responseData: MovieImages = try await api.GET(endpoint: endpoint, params: nil)
+        return responseData
     }
     
 //    func fetchGenres() async throws -> [MovieGenre] {
 //        let endpoint = MovieEndpoint.genres
 //
-//        let movieResponse: GenresResponse = try await api.GET(endpoint: endpoint, params: nil)
-//        return movieResponse.genres
+//        let responseData: GenresResponse = try await api.GET(endpoint: endpoint, params: nil)
+//        return responseData.genres
 //    }
     
 }

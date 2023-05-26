@@ -11,7 +11,8 @@ struct MovieDetailImage: View {
     var isPortrait: Bool { verticalSizeClass == .regular }
     
     init(imagePath: String?) {
-        self.imageLoader = ImageLoader(path: imagePath, size: .hd)
+        self.imageLoader = ImageLoaderCache.shared.loaderFor(path: imagePath, quality: .hd)
+        //ImageLoader(path: imagePath, quality: .hd)
     }
     
     private var image: some View {

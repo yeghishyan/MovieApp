@@ -6,16 +6,17 @@ import SwiftUI
 
 struct MovieDiscoverView: View {
     @StateObject private var movieDiscoverModel = MovieDiscoverViewModel()
-    @Environment(\.dismiss) private var dismiss
+    //@Binding private var selectedTab: TabbarView.Tab
     
     private let title: String
     private let param: MovieDiscoverViewModel.DiscoverParam
     private let value: String
     
-    init(title: String, param: MovieDiscoverViewModel.DiscoverParam, value: String) {
+    init(title: String, param: MovieDiscoverViewModel.DiscoverParam, value: String) {//, selectedTab: Binding<TabbarView.Tab>) {
         self.title = title
         self.param = param
         self.value = value
+        //self._selectedTab = selectedTab
     }
     
     var body: some View {
@@ -41,7 +42,7 @@ struct MovieDiscoverView: View {
 }
 
 #if DEBUG
-struct MovieGenre_Previews: PreviewProvider {
+struct MovieDiscover_Previews: PreviewProvider {
     static var previews: some View {
         //MovieDiscoverView(param: .genre, value: "27")
         MovieDiscoverView(title: "Cris Prat", param: .people, value: "73457")

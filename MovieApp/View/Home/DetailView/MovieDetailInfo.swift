@@ -6,40 +6,10 @@ import SwiftUI
 import Foundation
 
 struct MovieDetailInfo: View {
-   private let movie: Movie
+    private let movie: Movie
     
     init(movie: Movie) {
         self.movie = movie
-    }
-    
-    private var glassMorphicField: some View {
-        ZStack {
-            GlassMorphicView(effect: .systemUltraThinMaterialDark) { view in
-                view.saturationAmount = 10
-                view.gaussianBlurValue = 20
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-            
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(
-                    LinearGradient(
-                        colors: [.steam_theme.opacity(0.1),
-                                 .clear],
-                        startPoint: .top,
-                        endPoint: .bottom)
-                )
-            
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .stroke(
-                    LinearGradient(
-                        colors: [.steam_gold.opacity(0.25),
-                                 .steam_foreground.opacity(0.45)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing),
-                    lineWidth: 3)
-        }
-        //.overlay { content }
-        .padding(.horizontal, 5)
     }
     
     private var gradient = LinearGradient(
@@ -67,7 +37,6 @@ struct MovieDetailInfo: View {
                 HStack(spacing: 2) {
                     Image(systemName: "clock")
                         .imageScale(.small)
-                        
                     Text(movie.durationText)
                 }.padding(.horizontal, -5)
             })
@@ -106,19 +75,20 @@ struct MovieDetailInfo: View {
                     
                     Divider()
                     //ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHStack(alignment: .center) {
-                            ForEach(genres.prefix(3)) { genre in
-                                NavigationLink(
-                                    destination: MovieDiscoverView(
-                                        title: genre.name,
-                                        param: .genre,
-                                        value: "\(genre.id)"
-                                    )
-                                ) {
-                                    RoundedBadge(text: genre.name)
-                                }
+                    LazyHStack(alignment: .center) {
+                        ForEach(genres.prefix(3)) { genre in
+                            NavigationLink(
+                                destination: MovieDiscoverView(
+                                    title: genre.name,
+                                    param: .genre,
+                                    value: "\(genre.id)"
+                                    //selectedTab: .constant(.movies)
+                                )
+                            ) {
+                                RoundedBadge(text: genre.name)
                             }
                         }
+                    }
                     //}
                 }
                 .frame(height: 30)
@@ -130,28 +100,17 @@ struct MovieDetailInfo: View {
     private var overviewSection: some View {
         Text(movie.overview)
             .font(.oswald(size: 15, weight: .medium))
+            .fixedSize(horizontal: false, vertical: true) 
+            .lineLimit(nil)
             .foregroundColor(.secondary)
     }
     
-    private var content: some View {
+    var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             ratingSection
             titleSection
             genreSection
             overviewSection
-            MovieCreditView(movie: movie)
-        }
-        .padding(.vertical, 10)
-        .padding(.horizontal, 15)
-    }
-    
-    var body: some View {
-        ZStack(alignment: .topLeading) {
-            glassMorphicField
-                .opacity(0.98)
-            content
-                .padding(.horizontal, 10)
-                .padding(.trailing, 10)
         }
     }
 }

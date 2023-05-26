@@ -4,9 +4,9 @@
 
 import SwiftUI
 
+
 struct TabbarView: View {
     @State var selectedTab = Tab.movies
-    @State private var resetNavigationID = UUID()
 
     enum Tab: Int {
         case movies
@@ -33,15 +33,20 @@ struct TabbarView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            MovieHomeView().tabItem{
-                self.tabbarItem(.movies, imageName: "film.circle")
-            }.tag(resetNavigationID)
-            MovieHomeView().tabItem{
-                self.tabbarItem(.discover, imageName: "popcorn.circle")
-            }.tag(Tab.discover)
-            SettingsView().tabItem{
-                self.tabbarItem(.settings, imageName: "gearshape.circle")
-            }.tag(Tab.settings)
+            MovieHomeView()
+                .tabItem{
+                    self.tabbarItem(.movies, imageName: "film.circle")
+                }.tag(Tab.movies)
+            
+            MovieDiscoverView(title: "Discover", param: .year, value: Calendar.current.component(.year, from: Date()).description)//, selectedTab: $selectedTab)
+                .tabItem{
+                    self.tabbarItem(.discover, imageName: "popcorn.circle")
+                }.tag(Tab.discover)
+            
+            SettingsView()
+                .tabItem{
+                    self.tabbarItem(.settings, imageName: "gearshape.circle")
+                }.tag(Tab.settings)
         }
     }
 }

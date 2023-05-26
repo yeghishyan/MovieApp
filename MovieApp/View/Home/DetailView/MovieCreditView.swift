@@ -4,10 +4,6 @@
 
 import SwiftUI
 
-/// Magic numbers
-/// Actor image max width: 70
-/// Actor image vertical padding: -10
-
 struct MovieCreditView: View {
     let movie: Movie
     
@@ -26,7 +22,6 @@ struct MovieCreditView: View {
                         VStack(alignment: .center, spacing: 0) {
                             if let imagePath = character.profile_path {
                                 MovieCastImage(imagePath: imagePath)
-                                    .padding(.vertical, -10)
                                     .padding(.horizontal, 5)
                                 Text(character.name)
                                     .frame(maxWidth: 70)
@@ -41,7 +36,7 @@ struct MovieCreditView: View {
             }
             .font(.oswald(size: 13))
         }
-        
+        .fixedSize(horizontal: false, vertical: true)
     }
     
     var body: some View {
@@ -83,9 +78,8 @@ struct MovieCreditView: View {
                 VStack(alignment: .leading) {
                     Text("Starring")
                         .font(.oswald(size: 15)).bold()
-                    if let cast = movie.credits?.cast, !cast.isEmpty {
-                        crewView(cast: cast)
-                    }
+                    crewView(cast: cast)
+                        .frame(maxHeight: .infinity, alignment: .leading)
                 }
                 Spacer()
             }

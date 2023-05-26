@@ -35,7 +35,7 @@ struct CircleRating : View {
             Circle()
                 .trim(from: 0, to: isDisplayed ? CGFloat(score) / 100 : 0)
                 .stroke(style: StrokeStyle(lineWidth: 5, dash: [30/sideSize]))
-                .foregroundColor(scoreColor.opacity(1))
+                .foregroundColor(scoreColor)
                 .animation(Animation.interpolatingSpring(stiffness: 60, damping: 10).delay(0.19), value: score)
         }
         .rotationEffect(.degrees(-90))
@@ -45,7 +45,8 @@ struct CircleRating : View {
     var body: some View {
         ZStack {
             Text("\(score)%")
-                .font(Font.system(size: sideSize/20 + 8))
+                .kerning(-0.9)
+                .font(Font.system(size: sideSize/10 + 7))
                 .fontWeight(.bold)
                 .foregroundColor(scoreColor)
             Circle()

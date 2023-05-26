@@ -10,11 +10,16 @@ struct PosterStyle: ViewModifier {
         
         func width() -> CGFloat {
             switch self {
-            case .small: return 130
-            case .medium: return 240
-            case .big: return 370
+            case .small: return 70
+            case .medium: return 130
+            case .big: return 240
             }
         }
+        
+        func height() -> CGFloat {
+            return self.width() * 6/4
+        }
+        
     }
     
     let size: Size
@@ -23,7 +28,7 @@ struct PosterStyle: ViewModifier {
         return content
             .cornerRadius(13)
             //.shadow(color: .black.opacity(0.5), radius: 8)
-            .frame(maxWidth: size.width(), maxHeight: size.width() * 6/4)
+            .frame(maxWidth: size.width(), maxHeight: size.height())
             .scaledToFit()
     }
 }

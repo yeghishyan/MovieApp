@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum MovieListEndpoint: String, CaseIterable, Identifiable {
+enum MovieSectionEndpoint: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     
     case nowPlaying
@@ -39,6 +39,7 @@ enum MovieEndpoint {
     case similar(movie: Int)
     case credits(movie: Int)
     case videos(movie: Int)
+    case images(movie: Int)
     
     func path() -> String {
         switch self {
@@ -68,6 +69,8 @@ enum MovieEndpoint {
             return "movie/\(String(movie))/recommendations"
         case let .similar(movie):
             return "movie/\(String(movie))/similar"
+        case let .images(movie):
+            return "movie/\(String(movie))/images"
         }
     }
 }

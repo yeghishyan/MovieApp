@@ -12,11 +12,14 @@ fileprivate let formatter: DateFormatter = {
 
 struct MovieCellView: View {
     @ObservedObject var imageLoader: ImageLoader
-    let movie: Movie
+    private let movie: Movie
+    private let size: PosterStyle.Size
     
-    init(movie: Movie) {
+    init(movie: Movie, quality: ImageService.Quality = .sd, size: PosterStyle.Size = .medium) {
         self.movie = movie
-        imageLoader = ImageLoader(path: movie.poster_path, size: .sd)
+        self.size = size
+        imageLoader = ImageLoaderCache.shared.loaderFor(path: movie.poster_path, quality: quality)
+        //ImageLoader(path: movie.poster_path, quality: quality)
     }
     
     private var titleSection: some View {
@@ -61,7 +64,7 @@ struct MovieCellView: View {
                 Rectangle()
                     .foregroundColor(.gray)
             }
-        }.fixedSize(size: .small)
+        }.fixedSize(size: size)
     }
     
     var body: some View {

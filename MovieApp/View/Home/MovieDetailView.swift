@@ -13,8 +13,38 @@ struct MovieDetailView: View {
 
     let movie: Movie
     
-    //TODO move to AppState
     @State private var isFavorite: Bool = false
+    
+    private var glassMorphicField: some View {
+        ZStack {
+            GlassMorphicView(effect: .systemUltraThinMaterialDark) { view in
+                view.saturationAmount = 10
+                view.gaussianBlurValue = 20
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(
+                    LinearGradient(
+                        colors: [.steam_theme.opacity(0.1),
+                                 .clear],
+                        startPoint: .top,
+                        endPoint: .bottom)
+                )
+            
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .stroke(
+                    LinearGradient(
+                        colors: [.steam_gold.opacity(0.25),
+                                 .steam_foreground.opacity(0.45)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing),
+                    lineWidth: 3)
+        }
+        //.overlay { content }
+        .padding(.horizontal, 5)
+    }
+    
     
     var body: some View {
         ZStack {
@@ -24,7 +54,21 @@ struct MovieDetailView: View {
                 ScrollView(showsIndicators: false) {
                     Spacer()
                         .frame(minHeight: isPortrait ? 300 : 200)
-                    MovieDetailInfo(movie: movie)
+                    ZStack {
+                        glassMorphicField
+                            .opacity(0.98)
+                        VStack(alignment: .leading, spacing: 10) {
+                            MovieDetailInfo(movie: movie)
+                            Divider()
+                            MovieCreditView(movie: movie)
+                            Divider()
+                            SimilarMoviesView(movie: movie)
+                        }
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 15)
+                        .padding(.trailing, 10)
+                        //MovieImagesView(movie: movie)
+                    }
                 }
             }
         }
@@ -46,7 +90,6 @@ struct MovieDetailView: View {
         }
     }
 }
-
 
 #if DEBUG
 struct MovieDetailView_Previews: PreviewProvider {

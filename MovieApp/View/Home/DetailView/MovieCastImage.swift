@@ -6,26 +6,40 @@ import SwiftUI
 
 struct MovieCastImage: View {
     @ObservedObject private var imageLoader: ImageLoader
-    private let height: CGFloat
+    private let sideSize: CGFloat
     
-    init(imagePath: String?, height: CGFloat = 100) {
-        self.imageLoader = ImageLoader(path: imagePath, size: .ld)
-        self.height = height
+    init(imagePath: String?, sideSize: CGFloat = 70) {
+        self.imageLoader = ImageLoaderCache.shared.loaderFor(path: imagePath, quality: .ld)
+        //ImageLoader(path: imagePath, quality: .ld)
+        self.sideSize = sideSize
     }
     
-    var body: some View {
+    private var image: some View {
         ZStack {
             if let image = imageLoader.image {
                 Image(uiImage: image)
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .clipShape(Circle())
-                    .frame(height: height)
-            } else {
-                Circle()
-                    .foregroundColor(.gray)
+                    .aspectRatio(contentMode: .fill)
+                    .foregroundColor(.blue)
             }
         }
+    }
+    
+    var body: some View {
+        Circle()
+            .overlay(GeometryReader {
+                let side = sqrt($0.size.width  * 2 * $0.size.width / 2)
+                VStack {
+                    Rectangle().foregroundColor(.clear)
+                        .frame(width: side, height: side)
+                        .overlay(
+                            image
+                        )
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            })
+            .frame(width: sideSize, height: sideSize)
+            .clipShape(Circle())
     }
 }
 

@@ -27,7 +27,7 @@ class MovieHomeViewModel: ObservableObject {
         }
     }
     
-    private func fetchMoviesFromEndpoints(_ endpoints: [MovieListEndpoint] = MovieListEndpoint.allCases) async throws -> [MovieSection] {
+    private func fetchMoviesFromEndpoints(_ endpoints: [MovieSectionEndpoint] = MovieSectionEndpoint.allCases) async throws -> [MovieSection] {
         let results: [Result<MovieSection, Error>] = await withTaskGroup(of: Result<MovieSection, Error>.self) { group in
             for endpoint in endpoints {
                 group.addTask { await self.fetchMoviesFromEndpoint(endpoint) }
@@ -57,7 +57,7 @@ class MovieHomeViewModel: ObservableObject {
         return movieSections.sorted { $0.endpoint.sortIndex < $1.endpoint.sortIndex }
     }
     
-    private func fetchMoviesFromEndpoint(_ endpoint: MovieListEndpoint) async -> Result<MovieSection, Error> {
+    private func fetchMoviesFromEndpoint(_ endpoint: MovieSectionEndpoint) async -> Result<MovieSection, Error> {
         do {
             let movies = try await movieService.fetchMovies(from: endpoint)
             return .success(.init(
@@ -71,7 +71,7 @@ class MovieHomeViewModel: ObservableObject {
     
 }
 
-fileprivate extension MovieListEndpoint {
+fileprivate extension MovieSectionEndpoint {
     var sortIndex: Int {
         switch self {
         case .nowPlaying:

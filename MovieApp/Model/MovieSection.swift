@@ -9,7 +9,7 @@ struct MovieSection: Identifiable {
     let id = UUID()
     
     let movies: [Movie]
-    let endpoint: MovieListEndpoint
+    let endpoint: MovieSectionEndpoint
     var title: String { endpoint.title() }
 }
 
