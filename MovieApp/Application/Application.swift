@@ -13,7 +13,8 @@ struct MainApplication: App {
     var body: some Scene {
         WindowGroup {
             //StoreProvider(store: store) {
-            TabbarView().accentColor(.brown)
+            TabbarView()
+                .accentColor(.brown)
             //}
         }
     }

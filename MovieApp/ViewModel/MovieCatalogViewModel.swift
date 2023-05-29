@@ -5,7 +5,7 @@
 import Foundation
 
 @MainActor
-class MovieHomeViewModel: ObservableObject {
+class MovieCatalogViewModel: ObservableObject {
     @Published private(set) var phase: DataFetchPhase<[MovieSection]> = .empty
     private let movieService: MovieService = MovieService.shared
     
@@ -68,7 +68,6 @@ class MovieHomeViewModel: ObservableObject {
             return .failure(error)
         }
     }
-    
 }
 
 fileprivate extension MovieSectionEndpoint {

@@ -6,6 +6,7 @@ import SwiftUI
 import Foundation
 
 struct MovieDetailInfo: View {
+    @State private var isLoading = true
     private let movie: Movie
     
     init(movie: Movie) {
@@ -54,7 +55,7 @@ struct MovieDetailInfo: View {
     
     private var titleSection: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(movie.title)
+            Text(movie.userTitle)
                 .fixedSize(horizontal: false, vertical: true)
                 .font(.oswald(style: .largeTitle, weight: .bold))
                 .multilineTextAlignment(.leading)
@@ -106,11 +107,20 @@ struct MovieDetailInfo: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            ratingSection
-            titleSection
-            genreSection
-            overviewSection
+        ZStack {
+            VStack(alignment: .leading, spacing: 20) {
+                ratingSection
+                titleSection
+                genreSection
+                overviewSection
+            }
+        }
+        .redacted(reason: isLoading ? .placeholder : [])
+        .shimmering(active: isLoading)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isLoading.toggle()
+            }
         }
     }
 }
@@ -119,8 +129,21 @@ struct MovieDetailInfo: View {
 #if DEBUG
 struct MovieDetailInfo_Previews: PreviewProvider {
     static var previews: some View {
-        ScrollView {
-            MovieDetailInfo(movie: Movie.stubbedMovies[12])
+        let movie = Movie.stubbedMovies[10]
+        let isPortrait = true
+        
+        ZStack {
+            Color.gray
+            ScrollView(showsIndicators: false) {
+                VStack {
+                    VStack(alignment: .leading, spacing: 10) {
+                        MovieDetailInfo(movie: movie)
+                    }
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 15)
+                    .padding(.trailing, 10)
+                }
+            }
         }
     }
 }

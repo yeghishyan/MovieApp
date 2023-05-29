@@ -5,6 +5,7 @@
 import SwiftUI
 
 struct MovieCreditView: View {
+    @State private var isLoading: Bool = true
     let movie: Movie
     
     @ViewBuilder
@@ -23,6 +24,7 @@ struct MovieCreditView: View {
                             if let imagePath = character.profile_path {
                                 MovieCastImage(imagePath: imagePath)
                                     .padding(.horizontal, 5)
+                                
                                 Text(character.name)
                                     .frame(maxWidth: 70)
                                 Text(character.character)
@@ -31,10 +33,10 @@ struct MovieCreditView: View {
                         }
                         .foregroundColor(.secondary)
                         .lineLimit(1).truncationMode(.tail)
+                        .font(.oswald(size: 13))
                     }
                 }
             }
-            .font(.oswald(size: 13))
         }
         .fixedSize(horizontal: false, vertical: true)
     }
@@ -54,9 +56,10 @@ struct MovieCreditView: View {
                             Text(director.name)
                         }
                     }
-                }.font(.oswald(size: 15))
+                }
+                .font(.oswald(size: 15))
+                
             }
-            
             if let producers = movie.producers, !producers.isEmpty {
                 HStack(alignment: .top) {
                     Text("Producers: ")
@@ -79,9 +82,14 @@ struct MovieCreditView: View {
                     Text("Starring")
                         .font(.oswald(size: 15)).bold()
                     crewView(cast: cast)
-                        .frame(maxHeight: .infinity, alignment: .leading)
                 }
-                Spacer()
+            }
+        }
+        .redacted(reason: isLoading ? .placeholder : [])
+        .shimmering(active: isLoading)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isLoading.toggle()
             }
         }
     }

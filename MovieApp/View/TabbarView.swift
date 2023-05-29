@@ -6,17 +6,18 @@ import SwiftUI
 
 
 struct TabbarView: View {
-    @State var selectedTab = Tab.movies
-
+    @State private var selectedTab: TabbarView.Tab = .home
+    @ObservedObject private var appState: AppState = AppState()
+    
     enum Tab: Int {
-        case movies
-        case discover
+        case home
+        case catalog
         case settings
         
         func name() -> String {
             switch self {
-            case .movies: return "Movies"
-            case .discover: return "Discover"
+            case .home: return "Movies"
+            case .catalog: return "Catalog"
             case .settings: return "Settings"
             }
         }
@@ -34,14 +35,16 @@ struct TabbarView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             MovieHomeView()
+                //.environmentObject(appState)
                 .tabItem{
-                    self.tabbarItem(.movies, imageName: "film.circle")
-                }.tag(Tab.movies)
+                    self.tabbarItem(.home, imageName: "popcorn.circle")
+                }.tag(Tab.home)
             
-            MovieDiscoverView(title: "Discover", param: .year, value: Calendar.current.component(.year, from: Date()).description)//, selectedTab: $selectedTab)
+            MovieCatalogView()
                 .tabItem{
-                    self.tabbarItem(.discover, imageName: "popcorn.circle")
-                }.tag(Tab.discover)
+                    self.tabbarItem(.home, imageName: "film.circle")
+                }.tag(Tab.catalog)
+                
             
             SettingsView()
                 .tabItem{
@@ -55,6 +58,7 @@ struct TabbarView: View {
 struct Tabbar_Previews : PreviewProvider {
     static var previews: some View {
         TabbarView()
+            .environmentObject(sampleState)
     }
 }
 #endif

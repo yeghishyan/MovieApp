@@ -14,17 +14,17 @@ class MovieDiscoverViewModel: ObservableObject {
         case year = "year"
     }
     
-    @Published private(set) var phase: DataFetchPhase<[Movie]?> = .empty
+    @Published private(set) var phase: DataFetchPhase<[Movie]> = .empty
     private let movieService: MovieService
     
-    var movies: [Movie]? { phase.value ?? nil }
+    var movies: [Movie] { phase.value ?? [] }
         
     init(movieService: MovieService = MovieService.shared) {
         self.movieService = movieService
     }
     
-    func loadMovies(param: DiscoverParam, value: String) async {
-        if Task.isCancelled { return }
+    func loadMovies(param: DiscoverParam, value: String, invalidateCache: Bool = false) async {
+        if Task.isCancelled, !invalidateCache { return }
         phase = .empty
      
         do {

@@ -9,8 +9,7 @@ struct MovieCastImage: View {
     private let sideSize: CGFloat
     
     init(imagePath: String?, sideSize: CGFloat = 70) {
-        self.imageLoader = ImageLoaderCache.shared.loaderFor(path: imagePath, quality: .ld)
-        //ImageLoader(path: imagePath, quality: .ld)
+        self.imageLoader = ImageLoader(path: imagePath, quality: .ld)
         self.sideSize = sideSize
     }
     
@@ -21,7 +20,17 @@ struct MovieCastImage: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .foregroundColor(.blue)
+                    .transition(.opacity.animation(Animation.default.speed(0.5)))
+            } else {
+                Circle()
+                    .fill(Color.steam_background)
+                    .frame(width: sideSize, height: sideSize)
+                    .redacted(reason: imageLoader.image == nil ? .placeholder : [])
+                    .shimmering(active: imageLoader.image == nil)
             }
+        }
+        .onAppear {
+            self.imageLoader.loadImage()
         }
     }
     

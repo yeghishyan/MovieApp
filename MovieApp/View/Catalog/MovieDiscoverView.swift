@@ -21,9 +21,7 @@ struct MovieDiscoverView: View {
     
     var body: some View {
         HStack {
-            if let movies = movieDiscoverModel.movies {
-                MovieListView(movies: movies)
-            }
+            MovieListView(movies: movieDiscoverModel.movies)
         }
         .task { loadMovies() }
         .overlay(DataLoadingView(
@@ -46,6 +44,7 @@ struct MovieDiscover_Previews: PreviewProvider {
     static var previews: some View {
         //MovieDiscoverView(param: .genre, value: "27")
         MovieDiscoverView(title: "Cris Prat", param: .people, value: "73457")
+            .environmentObject(sampleState)
     }
 }
 #endif

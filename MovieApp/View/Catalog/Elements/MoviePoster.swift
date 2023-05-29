@@ -5,15 +5,14 @@
 import SwiftUI
 
 struct MoviePoster: View {
-    @ObservedObject var imageLoader: ImageLoader
-    let size: PosterStyle.Size
-    let movie: Movie
+    @ObservedObject private var imageLoader: ImageLoader
+    private let size: ImageStyle.Size
+    private let movie: Movie
 
-    init(movie: Movie, quality: ImageService.Quality = .sd, size: PosterStyle.Size = .medium) {
+    init(movie: Movie, quality: ImageLoader.Quality = .sd, size: ImageStyle.Size = .small) {
         self.movie = movie
         self.size = size
-        self.imageLoader = ImageLoaderCache.shared.loaderFor(path: movie.poster_path, quality: quality)
-        //ImageLoader(path: movie.poster_path, quality: quality)
+        self.imageLoader = ImageLoader(path: movie.poster_path, quality: quality)
     }
     
     private var image: some View {
@@ -22,12 +21,17 @@ struct MoviePoster: View {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
+                    .transition(.opacity.animation(Animation.default.speed(0.5)))
             } else {
                 Rectangle()
-                    .frame(width: size.width(), height: size.height())
-                    .foregroundColor(.gray)
+                    .fill(.gray)
+                    .shimmering()
             }
-        }.fixedSize(size: size)
+        }
+        .onAppear {
+            self.imageLoader.loadImage()
+        }
+        .fixedSize(size: size)
     }
     
     var body: some View {
@@ -35,7 +39,10 @@ struct MoviePoster: View {
             image
                 .overlay(alignment: .topTrailing, content: {
                     CircleRating(score: Int(movie.vote_average * 10), size: size.width()/4)
-                        .padding([.trailing, .top], 10)
+                        .redacted(reason: imageLoader.image == nil ? .placeholder : [])
+                        .shimmering(active: imageLoader.image == nil)
+                        .padding(.trailing, 15)
+                        .padding(.top, 10)
                 })
         }
         //.contextMenu{MovieContextMenu(movieId: self.movieId) }

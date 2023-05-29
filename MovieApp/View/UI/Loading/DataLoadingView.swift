@@ -17,7 +17,7 @@ struct DataLoadingView<T: EmptyData>: View {
         case .empty:
             LoadingFiveLinesChronological()
         case .success(let value) where value.isEmpty:
-            EmptyPlaceholderView(text: "No data", image: Image(systemName: "film"))
+            EmptyPlaceholderView(text: "No data", image: Image(systemName: "light.ribbon"))
         case .failure(let error):
             RetryView(text: error.localizedDescription, retryAction: retryAction)
         default:
@@ -75,7 +75,7 @@ extension Optional: EmptyData {
 struct DataFetchPhaseOverlayView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            DataLoadingView(phase: .success([])) {
+            DataLoadingView<[Any]>(phase: .success([])) {
                 print("Retry")
             }
             DataLoadingView<[Movie]>(phase: .empty) {

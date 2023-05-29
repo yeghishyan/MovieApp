@@ -13,18 +13,18 @@ fileprivate let formatter: DateFormatter = {
 struct MovieCellView: View {
     @ObservedObject var imageLoader: ImageLoader
     private let movie: Movie
-    private let size: PosterStyle.Size
+    private let size: ImageStyle.Size
     
-    init(movie: Movie, quality: ImageService.Quality = .sd, size: PosterStyle.Size = .medium) {
+    init(movie: Movie, quality: ImageLoader.Quality = .sd, size: ImageStyle.Size = .small) {
         self.movie = movie
         self.size = size
-        imageLoader = ImageLoaderCache.shared.loaderFor(path: movie.poster_path, quality: quality)
+        imageLoader = ImageLoader(path: movie.poster_path, quality: quality)
         //ImageLoader(path: movie.poster_path, quality: quality)
     }
     
     private var titleSection: some View {
         ZStack {
-            Text(movie.title)
+            Text(movie.userTitle)
         }
         .lineLimit(2)
         .multilineTextAlignment(.leading)
@@ -53,18 +53,24 @@ struct MovieCellView: View {
                 .font(.oswald(size: 15))
         }
     }
-    
+                
     private var image: some View {
         ZStack {
             if let image = imageLoader.image {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
+                    .transition(.opacity.animation(Animation.default.speed(0.5)))
             } else {
                 Rectangle()
-                    .foregroundColor(.gray)
+                    .fill(.gray)
+                    .shimmering()
             }
-        }.fixedSize(size: size)
+        }
+        .onAppear {
+            self.imageLoader.loadImage()
+        }
+        .fixedSize(size: size)
     }
     
     var body: some View {
@@ -72,14 +78,18 @@ struct MovieCellView: View {
             image
                 .shadow(radius: 5)
                 .cornerRadius(9)
-            VStack(alignment: .leading) {
-                titleSection
-                ratingSection
-                overviewSection
+            ZStack {
+                VStack(alignment: .leading) {
+                    titleSection
+                    ratingSection
+                    overviewSection
+                }
+                .redacted(reason: imageLoader.image == nil ? .placeholder : [])
+                .shimmering(active: imageLoader.image == nil)
             }
         }
         .foregroundColor(.primary)
-        .padding(.horizontal, 5)
+        .padding(.horizontal, 10)
         //.contextMenu{MovieContextMenu(movieId: self.movieId) }
     }
 }
@@ -88,7 +98,7 @@ struct MovieCellView: View {
 struct MovieCell_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MovieCellView(movie: Movie.stubbedMovies[15])
+            MovieCellView(movie: Movie.stubbedMovies[13])
         }
     }
 }

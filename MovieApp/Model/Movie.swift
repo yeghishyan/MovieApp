@@ -42,7 +42,7 @@ struct Movie: Codable, Identifiable {
     
     var genres: [MovieGenre]?
     
-    var userTitle: String { return AppConfig.alwaysOriginalTitle ? original_title : title }
+    var userTitle: String { return AppState.alwaysOriginalTitle ? original_title : title }
     
     var durationText: String {
         let formatter = DateComponentsFormatter()
@@ -65,4 +65,10 @@ struct Movie: Codable, Identifiable {
     var producers: [MovieCrew]? { credits?.crew.filter { $0.job.lowercased() == "producer" } }
     
     var youtubeTrailers: [MovieVideo]? { videos?.filter { $0.youtubeURL != nil } }
+}
+
+extension Movie: Equatable {
+    static func == (lhs: Movie, rhs: Movie) -> Bool {
+        return lhs.id == rhs.id
+    }
 }

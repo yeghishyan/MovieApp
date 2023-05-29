@@ -5,6 +5,8 @@
 import SwiftUI
 
 struct MovieListView: View {
+    @EnvironmentObject private var appState: AppState
+
     let movies: [Movie]
     let alignment: Axis.Set
     
@@ -44,6 +46,7 @@ struct MovieListView: View {
             }
         }
         .padding(.horizontal, 10)
+        
         //.toolbar(.hidden, for: .tabBar)
         //.toolbar(.automatic, for: .bottomBar)
     }
@@ -53,7 +56,9 @@ struct MovieListView: View {
 struct MovieRow_Previews: PreviewProvider {
     static var previews: some View {
         MovieListView(movies: Movie.stubbedMovies)
+            .environmentObject(sampleState)
         MovieListView(movies: Movie.stubbedMovies, alignment: .horizontal)
+            .environmentObject(sampleState)
     }
 }
 #endif

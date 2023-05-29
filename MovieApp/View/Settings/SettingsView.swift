@@ -38,7 +38,7 @@ struct SettingsView : View {
                     }
                 }
                 .onAppear{
-                    self.alwaysOriginalTitle = AppConfig.alwaysOriginalTitle
+                    self.alwaysOriginalTitle = AppState.alwaysOriginalTitle
                 }
                 .navigationBarTitleDisplayMode(.large)
                 .navigationTitle("Settings")

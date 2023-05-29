@@ -45,33 +45,33 @@ struct MovieDetailView: View {
         .padding(.horizontal, 5)
     }
     
-    
     var body: some View {
         ZStack {
-            MovieDetailImage(imagePath: (isPortrait ? movie.poster_path : movie.backdrop_path))
-            
             if let movie = movieDetailModel.movie {
                 ScrollView(showsIndicators: false) {
-                    Spacer()
-                        .frame(minHeight: isPortrait ? 300 : 200)
-                    ZStack {
-                        glassMorphicField
-                            .opacity(0.98)
-                        VStack(alignment: .leading, spacing: 10) {
-                            MovieDetailInfo(movie: movie)
-                            Divider()
-                            MovieCreditView(movie: movie)
-                            Divider()
-                            SimilarMoviesView(movie: movie)
+                    VStack {
+                        MovieHeaderImage(imagePath: (isPortrait ? movie.poster_path : movie.backdrop_path))
+                                
+                        ZStack {
+                            glassMorphicField
+                                .opacity(0.98)
+                            VStack(alignment: .leading, spacing: 10) {
+                                MovieDetailInfo(movie: movie)
+                                Divider()
+                                MovieCreditView(movie: movie)
+                                Divider()
+                                SimilarMoviesView(movie: movie)
+                            }
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                            .padding(.trailing, 10)
                         }
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 15)
-                        .padding(.trailing, 10)
-                        //MovieImagesView(movie: movie)
+                        .padding(.top, isPortrait ? -300 : -450)
                     }
                 }
             }
         }
+        .ignoresSafeArea()
         .task { loadMovieDetails() }
         .overlay(DataLoadingView(
             phase: movieDetailModel.phase,
@@ -94,7 +94,7 @@ struct MovieDetailView: View {
 #if DEBUG
 struct MovieDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MovieDetailView(movie: Movie.stubbedMovies[2])
+        MovieDetailView(movie: Movie.stubbedMovies[3])
     }
 }
 #endif

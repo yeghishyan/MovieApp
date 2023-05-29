@@ -6,6 +6,7 @@ import SwiftUI
 
 struct SimilarMoviesView: View {
     @StateObject private var similarMoviesModel = SimilarMoviesViewModel()
+    @State private var isLoading: Bool = true
     let movie: Movie
     
     var body: some View {
@@ -22,8 +23,8 @@ struct SimilarMoviesView: View {
                                     destination: MovieDetailView(movie: movie)
                                 ) {
                                     VStack {
-                                        MoviePoster(movie: movie, quality: .ld, size: .small)
-                                        Text(movie.title)
+                                        MoviePoster(movie: movie, quality: .ld, size: .custom(130))
+                                        Text(movie.userTitle)
                                             .frame(maxWidth: 70)
                                             .font(.oswald(size: 13))
                                             .foregroundColor(.primary)
@@ -33,16 +34,26 @@ struct SimilarMoviesView: View {
                             }
                         }
                     }
+                    .padding([.leading, .bottom], 5)
+                    .fixedSize(horizontal: false, vertical: true)
                 }
             }
         }
+        .redacted(reason: isLoading ? .placeholder : [])
+        .shimmering(active: isLoading)
         .task {
             Task { await similarMoviesModel.fetchSimilarMovies(movieId: movie.id) }
-        }
-        .overlay {
-            DataLoadingView(
-                phase: similarMoviesModel.phase,
-                retryAction: {})
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isLoading = false
+            }
         }
     }
 }
+
+#if DEBUG
+struct SimilarMovies_Preview: PreviewProvider {
+    static var previews: some View {
+        SimilarMoviesView(movie: Movie.stubbedMovies[0])
+    }
+}
+#endif
