@@ -6,7 +6,6 @@ import SwiftUI
 
 struct MovieDetailView: View {
     @StateObject private var movieDetailModel = MovieDetailViewModel()
-    @Environment(\.dismiss) private var dismiss
     
     @Environment(\.verticalSizeClass) var verticalSizeClass
     var isPortrait: Bool { verticalSizeClass == .regular }

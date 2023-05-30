@@ -8,58 +8,85 @@ struct MovieCardView: View {
     @StateObject private var movieDetailModel = MovieDetailViewModel()
     private let movieId: Int
 
-    init(movieId: Int, quality: ImageLoader.Quality = .sd) {
+    init(movieId: Int) {
         self.movieId = movieId
     }
     
-    @ViewBuilder
     private func genreSection(movie: Movie) -> some View {
-        if let genres = movie.genres, !genres.isEmpty {
-        HStack(alignment: .center, spacing: 10) {
-                LazyHStack(alignment: .center) {
-                    ForEach(genres.prefix(3)) { genre in
-                        NavigationLink(
-                            destination: MovieDiscoverView(
-                                title: genre.name,
-                                param: .genre,
-                                value: "\(genre.id)"
-                            )
-                        ) {
-                            RoundedBadge(text: genre.name)
-                        }
+        ZStack {
+            if let genres = movie.genres, !genres.isEmpty {
+                    NavigationLink(
+                        destination: MovieDiscoverView(
+                            title: genres[0].name,
+                            param: .genre,
+                            value: "\(genres[0].id)"
+                        )
+                    ) {
+                        Text(genres[0].name)
                     }
-                }
             }
+        }
+    }
+    
+    private var glassMorphicField: some View {
+        ZStack {
+            GlassMorphicView(effect: .systemUltraThinMaterialDark) { view in
+                view.saturationAmount = 30
+                view.gaussianBlurValue = 20
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
+            
+            RoundedRectangle(cornerRadius: 30, style: .continuous)
+                .stroke(
+                    LinearGradient(
+                        colors: [.steam_gold.opacity(0.25),
+                                 .steam_foreground.opacity(0.45)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing),
+                    lineWidth: 5)
         }
     }
     
     var body: some View {
         ZStack {
             if let movie = movieDetailModel.movie {
-                VStack(alignment:.center, spacing: 0) {
-                    MovieImageView(imagePath: movie.poster_path)
-                    
-                    Button(action: {}, label: {
-                        HStack(spacing: 2) {
-                            Image(systemName: "clock")
-                                .imageScale(.small)
-                            Text(movie.durationText)
+                MovieImageView(imagePath: movie.poster_path, size: .custom(300))
+                    .cornerRadius(30)
+                    glassMorphicField
+                    .overlay {
+                        VStack(alignment: .center, spacing: 15) {
+                            Text(movie.userTitle)
+                                .lineLimit(1)
+                                .multilineTextAlignment(.center)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .font(.oswald(size: 30, weight: .bold))
+                                .blendMode(.overlay)
+                            
+                            MovieImageView(imagePath: movie.backdrop_path, size: .custom(250), isPoster: false)
+                                .shadow(radius: 10, x: 0, y: 10)
+                            
+                            VStack(alignment: .leading, spacing: 10) {
+                                HStack {
+                                    genreSection(movie: movie)
+                                    Label(movie.durationHours, systemImage: "clock")
+                                        .imageScale(.small)
+                                }
+                                .textCase(.uppercase)
+                                
+                                Text(movie.overview)
+                                    .font(.oswald(size: 15, weight: .medium))
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .lineLimit(4)
+                            }
+                            .padding(.horizontal, 10)
+                            //Spacer()
                         }
-                        .padding(.horizontal, 5)
-                    })
-                    .buttonStyle(GradientButtonStyle(colors: [.clear, .steam_foreground.opacity(0.1), .clear]))
-                    
-                    Text(movie.userTitle)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .font(.oswald(style: .largeTitle, weight: .bold))
-                    
-                    genreSection(movie: movie)
-                }
-                .font(.oswald())
-                .foregroundColor(.steam_foreground)
-                .aspectRatio(contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .padding(5)
+                        .foregroundColor(.steam_theme)
+                        .font(.oswald(size: 15, weight: .semibold))
+                        .padding(.horizontal, 15)
+                        .padding(.vertical, 20)
+                    }
+                    .font(.oswald())
             }
         }
         .task {
@@ -74,7 +101,7 @@ struct MovieCardView: View {
 #if DEBUG
 struct MovieCard_Preview: PreviewProvider {
     static var previews: some View {
-        MovieCardView(movieId: Movie.stubbedMovies[0].id)
+        MovieCardView(movieId: Movie.stubbedMovies[3].id)
     }
 }
 #endif

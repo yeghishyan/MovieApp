@@ -12,8 +12,8 @@ struct MovieHeaderImage: View {
     var isPortrait: Bool { verticalSizeClass == .regular }
     private var imageHeight: CGFloat = 700
     
-    init(imagePath: String?) {
-        self.imageLoader = ImageLoader(path: imagePath, quality: .original)
+    init(imagePath: String?, quality: ImageLoader.Quality = .original) {
+        self.imageLoader = ImageLoader(path: imagePath, quality: quality)
     }
     
     @ViewBuilder

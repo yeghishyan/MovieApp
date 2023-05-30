@@ -6,8 +6,6 @@ import SwiftUI
 import Combine
 
 struct MovieCatalogView: View {
-    @EnvironmentObject private var appState: AppState
-    
     @StateObject private var searchModel = MovieSearchViewModel()
     @StateObject private var movieCatalogModel = MovieCatalogViewModel()
     @State private var selectedSection: Int = 0
@@ -15,7 +13,7 @@ struct MovieCatalogView: View {
     var body: some View {
         //TabView(selection: $selectedSection) {
         VStack {
-            NavigationStack(path: $appState.navigationPath) {
+            NavigationStack {
                 if !movieCatalogModel.sections.isEmpty {
                     SearchableView(selected: $selectedSection)
                         .environmentObject(searchModel)

@@ -38,6 +38,7 @@
 		0EBB95ED2A20967100CB5EED /* MovieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBB95EC2A20967100CB5EED /* MovieImageView.swift */; };
 		0EBE9ECF2A21F529000CBDA0 /* ScrollDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBE9ECE2A21F529000CBDA0 /* ScrollDetector.swift */; };
 		0EBE9ED12A223ECF000CBDA0 /* MovieHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBE9ED02A223ECF000CBDA0 /* MovieHomeView.swift */; };
+		0ECD1B332A24DDDA009991B3 /* RectangleShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECD1B322A24DDDA009991B3 /* RectangleShape.swift */; };
 		0ED0059A2A15611D00FF287A /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED005992A15611D00FF287A /* View.swift */; };
 		0ED0059C2A156F8900FF287A /* Oswald-Heavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0ED0059B2A156F8900FF287A /* Oswald-Heavy.ttf */; };
 		0ED3C1892A1BC7B800DD45AC /* MovieHeaderImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED3C1882A1BC7B800DD45AC /* MovieHeaderImage.swift */; };
@@ -106,6 +107,7 @@
 		0EBB95EC2A20967100CB5EED /* MovieImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieImageView.swift; sourceTree = "<group>"; };
 		0EBE9ECE2A21F529000CBDA0 /* ScrollDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollDetector.swift; sourceTree = "<group>"; };
 		0EBE9ED02A223ECF000CBDA0 /* MovieHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieHomeView.swift; sourceTree = "<group>"; };
+		0ECD1B322A24DDDA009991B3 /* RectangleShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleShape.swift; sourceTree = "<group>"; };
 		0ED005992A15611D00FF287A /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		0ED0059B2A156F8900FF287A /* Oswald-Heavy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Heavy.ttf"; sourceTree = "<group>"; };
 		0ED3C1882A1BC7B800DD45AC /* MovieHeaderImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieHeaderImage.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				0EECB6842A2345FA0086640E /* ViewElemnts */,
 				0EECB6832A2345E70086640E /* Navigation */,
 				0EECB6822A2345C10086640E /* Loading */,
+				0ECD1B322A24DDDA009991B3 /* RectangleShape.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -489,6 +492,7 @@
 				0E11C5AF2A13B3AF003A8DD2 /* MovieCreditView.swift in Sources */,
 				0E8F305A2A1DF87700C70B69 /* MovieCastImage.swift in Sources */,
 				0E80B2FD2A1F91F000353EEA /* SimilarMoviesView.swift in Sources */,
+				0ECD1B332A24DDDA009991B3 /* RectangleShape.swift in Sources */,
 				0EF8D6C62A1178F70052471C /* MovieService.swift in Sources */,
 				0ED3C18D2A1BD63300DD45AC /* MovieDetailInfo.swift in Sources */,
 				0EE6C0142A12AFE200C7D697 /* MovieDiscoverViewModel.swift in Sources */,

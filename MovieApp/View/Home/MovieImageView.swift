@@ -6,9 +6,13 @@ import SwiftUI
 
 struct MovieImageView: View {
     @ObservedObject private var imageLoader: ImageLoader
+    private var size: ImageStyle.Size
+    private var isPoster: Bool
     
-    init(imagePath: String?) {
+    init(imagePath: String?, size: ImageStyle.Size = .medium, isPoster: Bool = true) {
         self.imageLoader = ImageLoader(path: imagePath, quality: .sd)
+        self.size = size
+        self.isPoster = isPoster
     }
     
     private var image: some View {
@@ -16,7 +20,7 @@ struct MovieImageView: View {
             if let image = imageLoader.image {
                 Image(uiImage: image)
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: .fill)
                     .transition(.opacity.animation(Animation.default.speed(0.5)))
             } else {
                 Rectangle()
@@ -27,7 +31,7 @@ struct MovieImageView: View {
         .onAppear {
             self.imageLoader.loadImage()
         }
-        .fixedSize(size: .medium)
+        .fixedSize(size: size, isPoster: isPoster)
     }
     
     var body: some View {

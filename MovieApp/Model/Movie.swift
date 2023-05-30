@@ -52,6 +52,12 @@ struct Movie: Codable, Identifiable {
         return formatter.string(from: TimeInterval(runtime)*60) ?? "n/a"
     }
     
+    var durationHours: String {
+        guard let runtime = runtime else { return "n/a" }
+        let hours = Int((Float(runtime)/60.0).rounded(.up))
+        return "\(hours) hours"
+    }
+    
     var releaseDate: Date {
         guard let date = release_date else { return Date() }
         let formatter = DateFormatter()

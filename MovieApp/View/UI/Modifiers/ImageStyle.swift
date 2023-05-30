@@ -20,25 +20,23 @@ struct ImageStyle: ViewModifier {
             case .original: return 677
             }
         }
-        
-        func height() -> CGFloat {
-            return self.width() * 3/2
-        }
     }
     
     let size: Size
+    let isPoster: Bool
     
     func body(content: Content) -> some View {
         return content
             .cornerRadius(13)
             //.shadow(color: .black.opacity(0.5), radius: 8)
-            .frame(width: size.width(), height: size.height())
+            .frame(width: size.width())
+            .frame(height: isPoster ? size.width()*3/2 : size.width()*9/16)
             .scaledToFit()
     }
 }
 
 extension View {
-    func fixedSize(size: ImageStyle.Size) -> some View {
-        return ModifiedContent(content: self, modifier: ImageStyle(size: size))
+    func fixedSize(size: ImageStyle.Size, isPoster: Bool = true) -> some View {
+        return ModifiedContent(content: self, modifier: ImageStyle(size: size, isPoster: isPoster))
     }
 }
