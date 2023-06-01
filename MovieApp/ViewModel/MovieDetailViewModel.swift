@@ -21,7 +21,7 @@ class MovieDetailViewModel: ObservableObject {
         
         do {
             var movie = try await self.movieService.fetchMovie(movieId: id)
-            //movie.videos = try await self.movieService.fetchVideo(movieId: id)
+            movie.videos = try await self.movieService.fetchVideo(movieId: id)
             movie.credits = try await self.movieService.fetchCredit(movieId: id)
             
             if Task.isCancelled { return }

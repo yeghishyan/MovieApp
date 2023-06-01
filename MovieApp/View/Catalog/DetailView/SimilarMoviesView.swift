@@ -20,7 +20,7 @@ struct SimilarMoviesView: View {
                         LazyHStack(alignment: .top, spacing: 10) {
                             ForEach(similarMoviesModel.movies) { movie in
                                 NavigationLink(
-                                    destination: MovieDetailView(movie: movie)
+                                    destination: MovieDetailView(movieId: movie.id)
                                 ) {
                                     VStack {
                                         MoviePoster(movie: movie, quality: .ld, size: .custom(130))

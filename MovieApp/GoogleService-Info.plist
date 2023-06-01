@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>810324104939-d7n5q6bmhjbkfbajb9obtgua8s9o721j.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.810324104939-d7n5q6bmhjbkfbajb9obtgua8s9o721j</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBn7HRFirx8FqWbii_qME6gsog7N68e5Pk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>810324104939</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>valoood.MovieApp</string>
+	<key>PROJECT_ID</key>
+	<string>movieapp-f542a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>movieapp-f542a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:810324104939:ios:b617213c3512d640b690ae</string>
+</dict>
+</plist>

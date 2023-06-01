@@ -36,30 +36,44 @@ struct MovieHomeView: View {
         }
     }
     
+    private var searchButton: some View {
+        NavigationLink(destination: {
+            SearchableViewParent() {}
+        }) {
+            Image(systemName: "magnifyingglass.circle")
+                .resizable()
+                .imageScale(.large)
+                .frame(width: 25, height: 25, alignment: .center)
+                .offset(y: -5)
+        }
+        .frame(width: 44, height: 44, alignment: .center)
+        .tint(Color.steam_foreground)
+    }
+    
+    private var menuButton: some View {
+        Button(action: {
+            
+        }) {
+            Image(systemName: "line.3.horizontal.circle")
+                .resizable()
+                .imageScale(.large)
+                .frame(width: 25, height: 25, alignment: .center)
+        }
+        .frame(width: 44, height: 44, alignment: .center)
+        .tint(Color.steam_foreground).offset(y: -5)
+    }
+    
     var body: some View {
         NavigationStack {
-            VStack {
-                headerSection()
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 30) {
-                        ForEach(movieHomeModel.movies) { movie in
-                            GeometryReader { proxy in
-                                let minX = Double(proxy.frame(in: .global).minX)
-                                MovieCardView(movieId: movie.id)
-                                    .tag(index(movie))
-                                    .rotation3DEffect(
-                                        Angle(degrees: (minX ) / -40),
-                                        axis: (x: 0, y: 1, z: 0)
-                                    )
-                                //.blur(radius: minX/4)
-                            }
-                            .frame(width: 300, height: 380)
-                            //.border(.black)
-                        }
-                    }
-                    .padding(30)
-                    Spacer()
-                }
+            GeometryReader {
+                let size = $0.size
+                MovieHomeViewProxy(movies: movieHomeModel.movies, size: size)
+            }
+            .navigationTitle("Movies")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) { menuButton }
+                ToolbarItem(placement: .navigationBarTrailing) { searchButton }
             }
         }
         .task { loadMovies(invalidateCache: false) }

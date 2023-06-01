@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NavigationBackButton: View {
+struct NavBackButton: View {
     var dismiss: DismissAction
     
     var body: some View {
@@ -28,7 +28,7 @@ struct NavigationBackButton: View {
     }
 }
 
-struct NavigationFavoriteButton: View {
+struct NavFavoriteButton: View {
     @Binding var isFavorite: Bool
     
     var body: some View {

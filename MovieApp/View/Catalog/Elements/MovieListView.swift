@@ -22,7 +22,7 @@ struct MovieListView: View {
                     LazyVStack(alignment: .leading, spacing: 10) {
                         ForEach(self.movies) { movie in
                             NavigationLink(
-                                destination: MovieDetailView(movie: movie)
+                                destination: MovieDetailView(movieId: movie.id)
                             ) {
                                 if movie.poster_path != nil {
                                     MovieCellView(movie: movie)
@@ -36,7 +36,7 @@ struct MovieListView: View {
                     LazyHStack(alignment: .top, spacing: 10) {
                         ForEach(self.movies) { movie in
                             NavigationLink(
-                                destination: MovieDetailView(movie: movie)
+                                destination: MovieDetailView(movieId: movie.id)
                             ) {
                                 MoviePoster(movie: movie)
                             }
